@@ -28,13 +28,13 @@
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
-		$arraySort = array("column" => "Brand", "direction" => "ascending");
+		$arraySort = array("column" => "IP", "direction" => "ascending");
 		
 		$arrayColumns = array();
-		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "100px", "visible" => true);
+		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "180px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Name", "name" => "Name", "width" => "250px", "visible" => true);
-		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "200px", "visible" => true);
-		$arrayColumns[] = array("caption" => "ms", "name" => "Duration", "width" => "200px", "visible" => true);
+		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "180px", "visible" => true);
+		$arrayColumns[] = array("caption" => "ms", "name" => "Duration", "width" => "100px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => true);
 		
 		$DeviceArray = array();
@@ -81,7 +81,7 @@
 
     			If ($Response["192.168.178.".$i]["Ping"] == true) {
         			$Devices["192.168.178.".$i]["Ping"] = true;
-        			$Devices["192.168.178.".$i]["Duration"] = $Response["192.168.178.".$i]["Duration"] * 1000;
+        			$Devices["192.168.178.".$i]["Duration"] = round($Response["192.168.178.".$i]["Duration"] * 1000, 3);
 				$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
 				$Devices["192.168.178.".$i]["MAC"] = "nicht verfügbar";
 				$Devices["192.168.178.".$i]["InstanceID"] = 0;
