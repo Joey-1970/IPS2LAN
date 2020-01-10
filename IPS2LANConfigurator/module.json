@@ -1,0 +1,14 @@
+{
+  "id": "{BB9EA86B-CEBA-3F27-1D8B-5F251EFB13F1}",
+  "name": "IPS2LANConfigurator",
+  "type": 4,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2LANConfigurator"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "IPS2LANConfigurator"
+}
