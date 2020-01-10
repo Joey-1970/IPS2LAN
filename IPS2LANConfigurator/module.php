@@ -34,13 +34,14 @@
 		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "100px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Name", "name" => "Name", "width" => "250px", "visible" => true);
 		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "200px", "visible" => true);
+		$arrayColumns[] = array("caption" => "ms", "name" => "Duration", "width" => "200px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => true);
 		
 		$DeviceArray = array();
 		$DeviceArray = unserialize($this->GetData());
 		
 		$arrayValues = array();
-		for ($i = 0; $i < Count($DeviceArray); $i++) {
+		foreach ($DeviceArray as $IP => $Values) {
 			/*
 			$arrayCreate = array();
 			$arrayCreate[] = array("moduleID" => "{47286CAD-187A-6D88-89F0-BDA50CBF712F}", 
@@ -49,14 +50,12 @@
 					       "Place" => $StationArray[$i]["Place"], "instanceID" => $StationArray[$i]["InstanceID"], 
 					       "create" => $arrayCreate);
 			*/
-			$arrayValues[] = array("Brand" => $StationArray[$i]["Brand"], "Name" => $StationArray[$i]["Name"], "Street" => $StationArray[$i]["Street"],
-					       "Place" => $StationArray[$i]["Place"], "instanceID" => $StationArray[$i]["InstanceID"], 
-					       "create" => $arrayCreate);
+			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
+					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $StationArray[$i]["InstanceID"]);
 		}
 		
 		$arrayElements[] = array("type" => "Configurator", "name" => "Network", "caption" => "Netzwerk", "rowCount" => 20, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		$arrayElements[] = array("type" => "Button", "caption" => "Tankerkönig-API", "onClick" => "echo 'https://creativecommons.tankerkoenig.de/';");
 		
  		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	}       
@@ -85,6 +84,7 @@
         			$Devices["192.168.178.".$i]["Duration"] = $Response["192.168.178.".$i]["Duration"] * 1000;
 				$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
 				$Devices["192.168.178.".$i]["MAC"] = "nicht verfügbar";
+				$Devices["192.168.178.".$i]["InstanceID"] = 0;
     			}
 		}
 	return serialize($Devices);
