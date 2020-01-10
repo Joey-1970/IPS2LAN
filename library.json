@@ -1,0 +1,12 @@
+{
+  "id": "{434BD240-DC1D-42FD-A756-74FCDD22AF78}",
+  "author": "Joachim Päper",
+  "name": "IPS2LAN",
+  "url": "www.ip-symcon.de",
+  "compatibility": {
+        "version": "5.1"
+  },
+  "version": "1.0",
+  "build": 0,
+  "date": 0
+}
