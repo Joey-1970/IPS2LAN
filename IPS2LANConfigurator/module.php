@@ -51,7 +51,7 @@
 					       "create" => $arrayCreate);
 			*/
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
-					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $StationArray[$i]["InstanceID"]);
+					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"]);
 		}
 		
 		$arrayElements[] = array("type" => "Configurator", "name" => "Network", "caption" => "Netzwerk", "rowCount" => 20, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
