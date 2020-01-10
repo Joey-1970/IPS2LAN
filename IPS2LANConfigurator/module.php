@@ -8,7 +8,8 @@
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-	
+		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
+		$this->RegisterPropertyInteger("DeviceAdressEnd", 254);  
         }
  	
 	public function GetConfigurationForm() 
@@ -20,17 +21,19 @@
 		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
 				
 		$arrayElements = array(); 
-		$arrayElements[] = array("type" => "SelectLocation", "name" => "Location", "caption" => "Region");
-		$arrayElements[] = array("type" => "Label", "label" => "Radius (gemäß Tankerkönig.de Maximum 25 km)");
-		$arrayElements[] = array("type" => "NumberSpinner", "name" => "Radius", "caption" => "Radius (km)", "digits" => 1);
+		$ArrayRowLayout = array();
+		$ArrayRowLayout[] = array("type" => "Label", "label" => "Geräte-Adressbereich");
+		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressStart", "caption" => "Start", "digits" => 0);
+		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
+		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		$arraySort = array("column" => "Brand", "direction" => "ascending");
 		
 		$arrayColumns = array();
-		$arrayColumns[] = array("caption" => "Marke", "name" => "Brand", "width" => "100px", "visible" => true);
+		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "100px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Name", "name" => "Name", "width" => "250px", "visible" => true);
-		$arrayColumns[] = array("caption" => "Strasse", "name" => "Street", "width" => "200px", "visible" => true);
+		$arrayColumns[] = array("caption" => "MAC", "name" => "Street", "width" => "200px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Ort", "name" => "Place", "width" => "auto", "visible" => true);
 		
 		$StationArray = array();
