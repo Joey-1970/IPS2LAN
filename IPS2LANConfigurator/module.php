@@ -73,6 +73,14 @@
 	return;
 	}
 	
-	
+	private function Ping($IP)
+	{
+    		$Start = microtime(true);
+    		$Response = Sys_Ping($IP, 100); 
+    		$Duration = microtime(true) - $Start;
+    		$Result[$IP]["Ping"] = $Response;
+    		$Result[$IP]["Duration"] = $Duration;
+	return serialize($Result);
+	}
 }
 ?>
