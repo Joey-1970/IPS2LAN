@@ -8,7 +8,6 @@
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-		$this->ConnectParent("{66FD608F-6C67-6011-25E3-B9ED4C3E1590}");
 	
         }
  	
