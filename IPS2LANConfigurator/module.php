@@ -36,15 +36,19 @@
 		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "200px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => true);
 		
-		$StationArray = array();
-		If ($this->HasActiveParent() == true) {
-			$StationArray = unserialize($this->GetData());
-		}
+		$DeviceArray = array();
+		$DeviceArray = unserialize($this->GetData());
+		
 		$arrayValues = array();
-		for ($i = 0; $i < Count($StationArray); $i++) {
+		for ($i = 0; $i < Count($DeviceArray); $i++) {
+			/*
 			$arrayCreate = array();
 			$arrayCreate[] = array("moduleID" => "{47286CAD-187A-6D88-89F0-BDA50CBF712F}", 
 					       "configuration" => array("StationID" => $StationArray[$i]["StationsID"], "Timer_1" => 10));
+			$arrayValues[] = array("Brand" => $StationArray[$i]["Brand"], "Name" => $StationArray[$i]["Name"], "Street" => $StationArray[$i]["Street"],
+					       "Place" => $StationArray[$i]["Place"], "instanceID" => $StationArray[$i]["InstanceID"], 
+					       "create" => $arrayCreate);
+			*/
 			$arrayValues[] = array("Brand" => $StationArray[$i]["Brand"], "Name" => $StationArray[$i]["Name"], "Street" => $StationArray[$i]["Street"],
 					       "Place" => $StationArray[$i]["Place"], "instanceID" => $StationArray[$i]["InstanceID"], 
 					       "create" => $arrayCreate);
@@ -69,8 +73,21 @@
 	// Beginn der Funktionen
 	private function GetData()
 	{
+		$DeviceAdressStart = $this->ReadPropertyInteger("DeviceAdressStart");
+		$DeviceAdressEnd = $this->ReadPropertyInteger("DeviceAdressEnd");
+		$Devices = array();
 		
-	return;
+		for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
+    			$Response = unserialize(Ping("192.168.178.".$i));
+
+    			If ($Response["192.168.178.".$i]["Ping"] == true) {
+        			$Devices["192.168.178.".$i]["Ping"] = true;
+        			$Devices["192.168.178.".$i]["Duration"] = $Response["192.168.178.".$i]["Duration"] * 1000;
+				$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
+				$Devices["192.168.178.".$i]["MAC"] = "nicht verfügbar";
+    			}
+		}
+	return serialize($Devices);
 	}
 	
 	private function Ping($IP)
