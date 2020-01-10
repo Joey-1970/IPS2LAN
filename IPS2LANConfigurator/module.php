@@ -33,8 +33,8 @@
 		$arrayColumns = array();
 		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "100px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Name", "name" => "Name", "width" => "250px", "visible" => true);
-		$arrayColumns[] = array("caption" => "MAC", "name" => "Street", "width" => "200px", "visible" => true);
-		$arrayColumns[] = array("caption" => "Ort", "name" => "Place", "width" => "auto", "visible" => true);
+		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "200px", "visible" => true);
+		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => true);
 		
 		$StationArray = array();
 		If ($this->HasActiveParent() == true) {
@@ -50,7 +50,7 @@
 					       "create" => $arrayCreate);
 		}
 		
-		$arrayElements[] = array("type" => "Configurator", "name" => "PetrolStations", "caption" => "Tankstellen", "rowCount" => 10, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
+		$arrayElements[] = array("type" => "Configurator", "name" => "Network", "caption" => "Netzwerk", "rowCount" => 20, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "Button", "caption" => "Tankerkönig-API", "onClick" => "echo 'https://creativecommons.tankerkoenig.de/';");
 		
