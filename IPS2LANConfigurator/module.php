@@ -77,7 +77,7 @@
 		$Devices = array();
 		
 		for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
-    			$Response = unserialize(Ping("192.168.178.".$i));
+    			$Response = unserialize($this->Ping("192.168.178.".$i));
 
     			If ($Response["192.168.178.".$i]["Ping"] == true) {
         			$Devices["192.168.178.".$i]["Ping"] = true;
