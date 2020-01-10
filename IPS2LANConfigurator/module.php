@@ -28,14 +28,14 @@
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
-		$arraySort = array("column" => "IP", "direction" => "ascending");
+		//$arraySort = array("column" => "IP", "direction" => "ascending");
 		
 		$arrayColumns = array();
 		$arrayColumns[] = array("caption" => "IP", "name" => "IP", "width" => "180px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Name", "name" => "Name", "width" => "250px", "visible" => true);
 		$arrayColumns[] = array("caption" => "MAC", "name" => "MAC", "width" => "180px", "visible" => true);
-		$arrayColumns[] = array("caption" => "ms", "name" => "Duration", "width" => "100px", "visible" => true);
-		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => true);
+		$arrayColumns[] = array("caption" => "Ping (ms)", "name" => "Duration", "width" => "100px", "visible" => true);
+		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => false);
 		
 		$DeviceArray = array();
 		$DeviceArray = unserialize($this->GetData());
