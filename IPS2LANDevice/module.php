@@ -125,6 +125,43 @@
 		$Result[$IP]["Duration"] = $Duration;
 	return serialize($Result);
 	}    
+	
+	private function WakeOnLAN()
+	{
+    		$mac = $this->ReadPropertyString("MAC");
+		if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+			$broadcast = "255.255.255.255";
+			$mac_array = preg_split('#:#', $mac);
+			$hwaddr = '';
+			foreach($mac_array AS $octet)
+			{
+				$hwaddr .= chr(hexdec($octet));
+			}
+			// Create Magic Packet
+			$packet = '';
+			for ($i = 1; $i <= 6; $i++)
+			{
+				$packet .= chr(255);
+			}
+			for ($i = 1; $i <= 16; $i++)
+			{
+				$packet .= $hwaddr;
+			}
+			$sock = socket_create(AF_INET, SOCK_DGRAM, SOL_UDP);
+			if ($sock)
+			{
+				$options = socket_set_option($sock, SOL_SOCKET, SO_BROADCAST, true);
+				if ($options >=0) 
+				{    
+					$e = socket_sendto($sock, $packet, strlen($packet), 0, $broadcast, 7);
+					socket_close($sock);
+				}    
+			}
+		}
+		else {
+			$this->SendDebug("WakeOnLAN", "Keine gueltige MAC verfügbar!", 0);
+		}
+	}    
 	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
 	{
