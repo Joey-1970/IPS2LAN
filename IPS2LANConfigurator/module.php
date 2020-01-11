@@ -94,25 +94,26 @@
 			$IP_Parts = explode(".", $BasicIP);
     			If (count($IP_Parts) == 4) {
         			$IP = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".";
-    			}
-			// erweiterte Daten über ARP laden
-			$MAC = unserialize($this->MAC());
+    			
+				// erweiterte Daten über ARP laden
+				$MAC = unserialize($this->MAC());
 
-			for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
-				$Response = unserialize($this->Ping($IP.$i));
+				for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
+					$Response = unserialize($this->Ping($IP.$i));
 
-				If ($Response[$IP.$i]["Ping"] == true) {
-					$Devices[$IP.$i]["Ping"] = true;
-					$Devices[$IP.$i]["Duration"] = round($Response[$IP.$i]["Duration"] * 1000, 3);
-					if (array_key_exists($IP.$i, $MAC)) {
-						$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
-						$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
+					If ($Response[$IP.$i]["Ping"] == true) {
+						$Devices[$IP.$i]["Ping"] = true;
+						$Devices[$IP.$i]["Duration"] = round($Response[$IP.$i]["Duration"] * 1000, 3);
+						if (array_key_exists($IP.$i, $MAC)) {
+							$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
+							$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
+						}
+						else {
+							$Devices[$IP.$i]["Name"] = "nicht verfügbar";
+							$Devices[$IP.$i]["MAC"] = "";
+						}
+						$Devices[$IP.$i]["InstanceID"] = 0;
 					}
-					else {
-						$Devices[$IP.$i]["Name"] = "nicht verfügbar";
-						$Devices[$IP.$i]["MAC"] = "";
-					}
-					$Devices[$IP.$i]["InstanceID"] = 0;
 				}
 			}
 		}
