@@ -101,7 +101,7 @@
     		$Duration = microtime(true) - $Start;
     		$Result[$IP]["Ping"] = $Response;
     		$Result[$IP]["Duration"] = $Duration;
-		If ($State <> GetValueBoolean($this->GetIDForIdent("State"))) {
+		If ($Response <> GetValueBoolean($this->GetIDForIdent("State"))) {
 			SetValueBoolean($this->GetIDForIdent("State"), $Response);
 		}
 	return serialize($Result);
