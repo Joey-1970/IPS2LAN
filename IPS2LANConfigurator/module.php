@@ -10,7 +10,7 @@
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
-		$this->RegisterPropertyString("IP", "undefiniert"); 
+		$this->RegisterPropertyString("BasicIP", "undefiniert"); 
         }
  	
 	public function GetConfigurationForm() 
@@ -29,7 +29,7 @@
 			$arrayOptions[] = array("label" => $Network, "value" => $Network);
 		}
 		
-		$arrayElements[] = array("type" => "Select", "name" => "IP", "caption" => "Netzwerk", "options" => $arrayOptions );
+		$arrayElements[] = array("type" => "Select", "name" => "BasicIP", "caption" => "Netzwerk", "options" => $arrayOptions );
 
 		
 		$ArrayRowLayout = array();
@@ -85,27 +85,36 @@
 	{
 		$DeviceAdressStart = $this->ReadPropertyInteger("DeviceAdressStart");
 		$DeviceAdressEnd = $this->ReadPropertyInteger("DeviceAdressEnd");
+		$BasicIP = $this->ReadPropertyString("BasicIP");
 		$Devices = array();
-		
 		$MAC = array();
-		$MAC = unserialize($this->MAC());
 		
-		for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
-    			$Response = unserialize($this->Ping("192.168.178.".$i));
-
-    			If ($Response["192.168.178.".$i]["Ping"] == true) {
-        			$Devices["192.168.178.".$i]["Ping"] = true;
-        			$Devices["192.168.178.".$i]["Duration"] = round($Response["192.168.178.".$i]["Duration"] * 1000, 3);
-				if (array_key_exists("192.168.178.".$i, $MAC)) {
-					$Devices["192.168.178.".$i]["Name"] = $MAC["192.168.178.".$i]["Name"];
-					$Devices["192.168.178.".$i]["MAC"] = $MAC["192.168.178.".$i]["MAC"];
-				}
-				else {
-					$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
-					$Devices["192.168.178.".$i]["MAC"] = "";
-				}
-				$Devices["192.168.178.".$i]["InstanceID"] = 0;
+		If ($BasicIP <> "undefinert") {
+			// Basic IP auflösen
+			$IP_Parts = explode(".", $BasicIP);
+    			If (count($IP_Parts) == 4) {
+        			$IP = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".";
     			}
+			// erweiterte Daten über ARP laden
+			$MAC = unserialize($this->MAC());
+
+			for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
+				$Response = unserialize($this->Ping($IP.$i));
+
+				If ($Response[$IP.$i]["Ping"] == true) {
+					$Devices[$IP.$i]["Ping"] = true;
+					$Devices[$IP.$i]["Duration"] = round($Response[$IP.$i]["Duration"] * 1000, 3);
+					if (array_key_exists($IP.$i, $MAC)) {
+						$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
+						$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
+					}
+					else {
+						$Devices[$IP.$i]["Name"] = "nicht verfügbar";
+						$Devices[$IP.$i]["MAC"] = "";
+					}
+					$Devices[$IP.$i]["InstanceID"] = 0;
+				}
+			}
 		}
 	return serialize($Devices);
 	}
