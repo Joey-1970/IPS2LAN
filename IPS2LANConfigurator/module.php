@@ -10,7 +10,7 @@
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
-		$this->RegisterPropertyInteger("IP", ""); 
+		$this->RegisterPropertyString("IP", ""); 
         }
  	
 	public function GetConfigurationForm() 
