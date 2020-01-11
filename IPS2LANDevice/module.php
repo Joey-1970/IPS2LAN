@@ -82,6 +82,36 @@
 		
 	}
 	
+	private function Simple_Ping($IP)
+	{
+    		$Result = array();
+		$Start = microtime(true);
+    		$Response = Sys_Ping($IP, 100); 
+    		$Duration = microtime(true) - $Start;
+    		$Result[$IP]["Ping"] = $Response;
+    		$Result[$IP]["Duration"] = $Duration;
+		
+	return serialize($Result);
+	}    
+	    
+	private function Multiple_Ping($IP)
+	{
+    		$Result = array();
+		$Ping = array();
+		$Duration = array();
+		for ($i = 0; $i <= 5; $i++) {
+			$Start = microtime(true);
+			$Response = Sys_Ping($IP, 100); 
+			$Duration[] = microtime(true) - $Start;
+			$Ping[] = $Response;
+			
+		}
+		
+		$Result[$IP]["Ping"] = $Response;
+		$Result[$IP]["Duration"] = $Duration;
+	return serialize($Result);
+	}    
+	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
 	{
 	        if (!IPS_VariableProfileExists($Name))
