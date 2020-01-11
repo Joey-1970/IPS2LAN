@@ -63,10 +63,13 @@
 		$IP = $this->ReadPropertyString("IP");
 		
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
-    			$this->GetDataUpdate();
+    			$this->SetSummary($IP);
+
+			$this->GetDataUpdate();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
 		}
 		else {
+			$this->SetSummary("");
 			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
 		}
@@ -90,7 +93,8 @@
 	
 	private function Simple_Ping()
 	{
-    		$IP = $this->ReadPropertyString("IP");
+    		$this->SendDebug("Simple_Ping", "Ausfuehrung", 0);
+		$IP = $this->ReadPropertyString("IP");
 		$Result = array();
 		$Start = microtime(true);
     		$Response = Sys_Ping($IP, 100); 
