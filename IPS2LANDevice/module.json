@@ -1,0 +1,14 @@
+{
+  "id": "{D43B786D-F3F7-53A2-1434-79C975AA4408}",
+  "name": "IPS2LANDevice",
+  "type": 3,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2LANDevice"
+  ],
+  "parentRequirements": [],
+  "childRequirements": [],
+  "implemented": [],
+  "prefix": "IPS2LANDevice"
+}
