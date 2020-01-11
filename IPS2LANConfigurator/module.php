@@ -85,8 +85,14 @@
     			If ($Response["192.168.178.".$i]["Ping"] == true) {
         			$Devices["192.168.178.".$i]["Ping"] = true;
         			$Devices["192.168.178.".$i]["Duration"] = round($Response["192.168.178.".$i]["Duration"] * 1000, 3);
-				$Devices["192.168.178.".$i]["Name"] = $MAC["192.168.178.".$i]["Name"];
-				$Devices["192.168.178.".$i]["MAC"] = $MAC["192.168.178.".$i]["MAC"];
+				if (array_key_exists("192.168.178.".$i, $MAC)) {
+					$Devices["192.168.178.".$i]["Name"] = $MAC["192.168.178.".$i]["Name"];
+					$Devices["192.168.178.".$i]["MAC"] = $MAC["192.168.178.".$i]["MAC"];
+				}
+				else {
+					$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
+					$Devices["192.168.178.".$i]["MAC"] = "";
+				}
 				$Devices["192.168.178.".$i]["InstanceID"] = 0;
     			}
 		}
