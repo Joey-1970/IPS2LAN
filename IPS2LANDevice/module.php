@@ -16,6 +16,7 @@
             	parent::Create();
 		$this->RegisterPropertyString("IP", "");
 		$this->RegisterPropertyString("MAC", "");
+		$this->RegisterPropertyString("Name", "");
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
 		
@@ -37,6 +38,8 @@
 				
 		$arrayElements = array(); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IP", "caption" => "IP");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "MAC", "caption" => "MAC");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Name", "caption" => "Name");
 		$arrayElements[] = array("type" => "Label", "label" => "Aktualisierung");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "sek");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
