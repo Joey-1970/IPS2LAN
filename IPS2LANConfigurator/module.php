@@ -76,14 +76,17 @@
 		$DeviceAdressEnd = $this->ReadPropertyInteger("DeviceAdressEnd");
 		$Devices = array();
 		
+		$MAC = array();
+		$MAC = unserialize($this->MAC());
+		
 		for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
     			$Response = unserialize($this->Ping("192.168.178.".$i));
 
     			If ($Response["192.168.178.".$i]["Ping"] == true) {
         			$Devices["192.168.178.".$i]["Ping"] = true;
         			$Devices["192.168.178.".$i]["Duration"] = round($Response["192.168.178.".$i]["Duration"] * 1000, 3);
-				$Devices["192.168.178.".$i]["Name"] = "nicht verfügbar";
-				$Devices["192.168.178.".$i]["MAC"] = "nicht verfügbar";
+				$Devices["192.168.178.".$i]["Name"] = $MAC["192.168.178.".$i]["Name"];
+				$Devices["192.168.178.".$i]["MAC"] = $MAC["192.168.178.".$i]["MAC"];
 				$Devices["192.168.178.".$i]["InstanceID"] = 0;
     			}
 		}
@@ -98,6 +101,29 @@
     		$Result[$IP]["Ping"] = $Response;
     		$Result[$IP]["Duration"] = $Duration;
 	return serialize($Result);
+	}
+	    
+	private function MAC()
+	{
+		$arp = shell_exec('arp -a');
+		$Lines = explode("\n", $arp);
+
+		$devices = array();
+
+		$Search = array("auf", "[ether]", "eth0", "(", ")");
+		$Replace = array("", "", "", "", "");
+
+		$Devices = array();
+
+		foreach ($Lines as $Line) {
+    			$Line = str_replace($Search, $Replace, $Line);
+    			$Cols = preg_split('/\s+/', trim($Line));
+    			If (Count($Cols) == 3) {
+        			$Devices[$Cols[1]]["Name"] = $Cols[0];
+        			$Devices[$Cols[1]]["MAC"] = $Cols[2];
+    			}
+		}
+	return serialize($Devices);
 	}
 }
 ?>
