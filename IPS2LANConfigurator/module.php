@@ -10,7 +10,7 @@
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
-		$this->RegisterPropertyString("Network", ""); 
+		$this->RegisterPropertyString("IP", ""); 
         }
  	
 	public function GetConfigurationForm() 
@@ -28,7 +28,7 @@
 			$arrayOptions[] = array("label" => $Network, "value" => $Network);
 		}
 		
-		$arrayElements[] = array("type" => "Select", "name" => "Network", "caption" => "Netzwerk", "options" => $arrayOptions );
+		$arrayElements[] = array("type" => "Select", "name" => "IP", "caption" => "Netzwerk", "options" => $arrayOptions );
 
 		
 		$ArrayRowLayout = array();
