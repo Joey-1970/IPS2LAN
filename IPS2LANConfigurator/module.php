@@ -113,7 +113,7 @@
 							$Devices[$IP.$i]["Name"] = "nicht verfügbar";
 							$Devices[$IP.$i]["MAC"] = "";
 						}
-						$Devices[$IP.$i]["InstanceID"] = 0;
+						$Devices[$IP.$i]["InstanceID"] = $this->GetDeviceInstanceID($IP.$i);
 					}
 				}
 			}
@@ -167,6 +167,28 @@
     			}
 		}
 	return serialize($IP);
+	}
+	    
+	function GetDeviceInstanceID(string $IP)
+	{
+		$guid = "{D43B786D-F3F7-53A2-1434-79C975AA4408}";
+	    	$Result = 0;
+	    	// Modulinstanzen suchen
+	    	$InstanceArray = array();
+	    	$InstanceArray = @(IPS_GetInstanceListByModuleID($guid));
+	    	If (is_array($InstanceArray)) {
+			foreach($InstanceArray as $Module) {
+				If (strtolower(IPS_GetProperty($Module, "IP")) == strtolower($IP)) {
+					$this->SendDebug("GetStationInstanceID", "Gefundene Instanz: ".$Module, 0);
+					$Result = $Module;
+					break;
+				}
+				else {
+					$Result = 0;
+				}
+			}
+		}
+	return $Result;
 	}
 }
 ?>
