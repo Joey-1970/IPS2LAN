@@ -26,6 +26,7 @@
 		
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
+		$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
         }
  	
 	public function GetConfigurationForm() 
@@ -58,13 +59,16 @@
 		
 		
 		
-		$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
-		/*
-		If ($this->isValidUuid($this->ReadPropertyString("StationID")) == true) {
-			$this->GetDataUpdate();
+		
+		$IP = $this->ReadPropertyString("IP");
+		
+		if (filter_var($IP, FILTER_VALIDATE_IP)) {
+    			$this->GetDataUpdate();
+			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
 		}
 		else {
-			$this->SendDebug("GetDataUpdate", "Keine gueltige Tankstellen ID verfügbar!", 0);
+			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar!", 0);
+			$this->SetTimerInterval("Timer_1", 0);
 		}
 		*/
 	}
@@ -82,24 +86,28 @@
 	// Beginn der Funktionen
 	public function GetDataUpdate()
 	{
-		
+		$this->Simple_Ping();
 	}
 	
-	private function Simple_Ping($IP)
+	private function Simple_Ping()
 	{
-    		$Result = array();
+    		$IP = $this->ReadPropertyString("IP");
+		$Result = array();
 		$Start = microtime(true);
     		$Response = Sys_Ping($IP, 100); 
     		$Duration = microtime(true) - $Start;
     		$Result[$IP]["Ping"] = $Response;
     		$Result[$IP]["Duration"] = $Duration;
-		
+		If ($State <> GetValueBoolean($this->GetIDForIdent("State"))) {
+			SetValueBoolean($this->GetIDForIdent("State"), $Response);
+		}
 	return serialize($Result);
 	}    
 	    
 	private function Multiple_Ping($IP)
 	{
-    		$Result = array();
+    		$IP = $this->ReadPropertyString("IP");
+		$Result = array();
 		$Ping = array();
 		$Duration = array();
 		for ($i = 0; $i <= 5; $i++) {
