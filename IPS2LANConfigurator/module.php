@@ -9,7 +9,8 @@
             	// Diese Zeile nicht löschen.
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
-		$this->RegisterPropertyInteger("DeviceAdressEnd", 254);  
+		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
+		$this->RegisterPropertyString("Network", ""); 
         }
  	
 	public function GetConfigurationForm() 
@@ -21,6 +22,15 @@
 		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
 				
 		$arrayElements = array(); 
+		$arrayOptions = array();
+		$IP = unserialize($this->IP());
+		foreach($IP AS $Network) {
+			$arrayOptions[] = array("label" => $Network, "value" => $Network);
+		}
+		
+		$arrayElements[] = array("type" => "Select", "name" => "Network", "caption" => "Netzwerk", "options" => $arrayOptions );
+
+		
 		$ArrayRowLayout = array();
 		$ArrayRowLayout[] = array("type" => "Label", "label" => "Geräte-Adressbereich");
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressStart", "caption" => "Start", "digits" => 0);
@@ -130,6 +140,20 @@
     			}
 		}
 	return serialize($Devices);
+	}
+	    
+	private function IP()
+	{
+		$IPArray = array();
+		$IPArray = Sys_GetNetworkInfo();
+		$IP = array();
+		foreach ($IPArray as $Network) {
+    			$IP_Parts = explode(".", $Network["IP"]);
+    			If (count($IP_Parts) == 4) {
+        			$IP[] = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx";
+    			}
+		}
+	return serialize($IP);
 	}
 }
 ?>
