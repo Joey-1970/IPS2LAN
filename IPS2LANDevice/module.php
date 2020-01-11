@@ -70,7 +70,6 @@
 			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
 		}
-		*/
 	}
 	
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
