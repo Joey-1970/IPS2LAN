@@ -179,7 +179,7 @@
 		$MaxDuration = round(max($Duration) * 1000, 2);
 		// Erfolg auswerten
 		$SuccessRate = Round((array_sum($Ping)/count($Ping)) * 100, 2);
-		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AvgDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$SuccessRate."%", 0);
+		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AvgDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$SuccessRate."%"." Versuche: ".(count($Ping)), 0);
 		If ($SuccessRate == 100) {
 			$Result["Ping"] = 3;
 		}
