@@ -18,6 +18,8 @@
 		$this->RegisterPropertyString("MAC", "");
 		$this->RegisterPropertyString("Name", "");
 		$this->RegisterPropertyBoolean("MultiplePing", false);
+		$this->RegisterPropertyInteger("MaxWaitTime", 100);
+		$this->RegisterPropertyInteger("Tries", 5);
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
 		
@@ -34,7 +36,7 @@
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 20);
-		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "", 30);
+		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 30);
 		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 40);
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 50);
@@ -54,8 +56,13 @@
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Name", "caption" => "Name");
 		$arrayElements[] = array("type" => "Label", "label" => "Aktualisierung");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "sek");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "Label", "label" => "Maximale Wartezeit Ping (50 - 1000)");
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "MaxWaitTime", "caption" => "ms");
 		$arrayElements[] = array("type" => "Label", "label" => "Mehrfach-Ping nutzen");
 		$arrayElements[] = array("type" => "CheckBox", "name" => "MultiplePing", "caption" => "Mehrfach-Ping"); 
+		$arrayElements[] = array("type" => "Label", "label" => "Anzahl der Mehrfach-Ping (2 - 15)");
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "Tries", "caption" => "Versuche");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
 		
@@ -147,9 +154,10 @@
 	{
     		$this->SendDebug("Simple_Ping", "Ausfuehrung", 0);
 		$IP = $this->ReadPropertyString("IP");
+		$MaxWaitTime = $this->ReadPropertyInteger("MaxWaitTime");
 		$Result = array();
 		$Start = microtime(true);
-    		$Response = Sys_Ping($IP, 100); 
+    		$Response = Sys_Ping($IP, $MaxWaitTime); 
     		$Duration = microtime(true) - $Start;
     		$Result["Ping"] = $Response;
     		$Result["Duration"] = round($Duration * 1000, 2);
@@ -162,13 +170,15 @@
 	{
     		$this->SendDebug("Multiple_Ping", "Ausfuehrung", 0);
 		$IP = $this->ReadPropertyString("IP");
+		$MaxWaitTime = $this->ReadPropertyInteger("MaxWaitTime");
+		$Tries = $this->ReadPropertyInteger("Tries");
 		$Result = array();
 		$Ping = array();
 		$Duration = array();
-		$Tries = 5;
-		for ($i = 0; $i <= $Tries; $i++) {
+		
+		for ($i = 0; $i < $Tries; $i++) {
 			$Start = microtime(true);
-			$Response = Sys_Ping($IP, 100); 
+			$Response = Sys_Ping($IP, $MaxWaitTime); 
 			$Duration[] = microtime(true) - $Start;
 			$Ping[] = $Response;
 			
