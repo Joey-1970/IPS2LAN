@@ -113,13 +113,18 @@
 		$Result = array();
 		$Ping = array();
 		$Duration = array();
-		for ($i = 0; $i <= 5; $i++) {
+		$Tries = 5;
+		for ($i = 0; $i <= $Tries; $i++) {
 			$Start = microtime(true);
 			$Response = Sys_Ping($IP, 100); 
 			$Duration[] = microtime(true) - $Start;
 			$Ping[] = $Response;
 			
 		}
+		
+		$MinPing = min($Duration);
+		$AVGPing = array_sum($Duration)/count($Duration);
+		$MinPing = max($Duration);
 		
 		$Result[$IP]["Ping"] = $Response;
 		$Result[$IP]["Duration"] = $Duration;
