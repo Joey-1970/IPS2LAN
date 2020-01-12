@@ -29,9 +29,15 @@
 		IPS_SetVariableProfileAssociation("IPS2LAN.State", 2, "Störung", "Alert", 0xFFFF00);
 		IPS_SetVariableProfileAssociation("IPS2LAN.State", 3, "Online", "Network", 0x00FF00);
 		
+		$this->RegisterProfileFloat("IPS2LAN.ms", "Clock", "", " ms", 0, 1000, 0.001, 3);
+		
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 20);
+		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "", 30);
+		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 40);
+		$this->RegisterVariableFloat("AVGDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
+		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 50);
         }
  	
 	public function GetConfigurationForm() 
@@ -99,10 +105,12 @@
 		If ($MultiplePing == false) {
 			$Result = unserialize($this->Simple_Ping());
 			If ($Response["Ping"] == true) {
-				$Ping = 1;
+				$Ping = 3;
+				$SuccessRate = 100;
 			}
 			else {
-				$Ping = 3;
+				$Ping = 1;
+				$SuccessRate = 0;
 			}
 			$Duration = $Response["Duration"];
 		}
@@ -111,6 +119,9 @@
 		}
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
 			SetValueInteger($this->GetIDForIdent("State"), $Ping);
+		}
+		If ($SuccessRate <> GetValueFloat($this->GetIDForIdent("SuccessRate"))) {
+			SetValueFloat($this->GetIDForIdent("SuccessRate"), $SuccessRate);
 		}
 		SetValueInteger($this->GetIDForIdent("LastUpdate"), time() );
 		
