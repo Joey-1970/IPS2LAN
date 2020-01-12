@@ -23,11 +23,15 @@
 		
 		
 		// Profil anlegen
-		
+		$this->RegisterProfileInteger("IPS2LAN.State", "Information", "", "", 0, 3, 1);
+		IPS_SetVariableProfileAssociation("IPS2LAN.State", 0, "Unbekannt", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2LAN.State", 1, "Offline", "Close", 0xFF0000);
+		IPS_SetVariableProfileAssociation("IPS2LAN.State", 2, "Störung", "Alert", 0xFFFF00);
+		IPS_SetVariableProfileAssociation("IPS2LAN.State", 3, "Online", "Network", 0x00FF00);
 		
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
-		$this->RegisterVariableBoolean("State", "Status", "~Switch", 20);
+		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 20);
         }
  	
 	public function GetConfigurationForm() 
@@ -93,11 +97,23 @@
 	{
 		$MultiplePing = $this->ReadPropertyBoolean("MultiplePing");
 		If ($MultiplePing == false) {
-			$this->Simple_Ping();
+			$Result = unserialize($this->Simple_Ping());
+			If ($Response["Ping"] == true) {
+				$Ping = 1;
+			}
+			else {
+				$Ping = 3;
+			}
+			$Duration = $Response["Duration"];
 		}
 		else {
-			$this->Multiple_Ping();
+			$Result = unserialize($this->Multiple_Ping());
 		}
+		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
+			SetValueInteger($this->GetIDForIdent("State"), $Ping);
+		}
+		SetValueInteger($this->GetIDForIdent("LastUpdate"), time() );
+		
 	}
 	
 	private function Simple_Ping()
@@ -108,11 +124,10 @@
 		$Start = microtime(true);
     		$Response = Sys_Ping($IP, 100); 
     		$Duration = microtime(true) - $Start;
-    		$Result[$IP]["Ping"] = $Response;
-    		$Result[$IP]["Duration"] = $Duration;
-		If ($Response <> GetValueBoolean($this->GetIDForIdent("State"))) {
-			SetValueBoolean($this->GetIDForIdent("State"), $Response);
-		}
+    		$Result["Ping"] = $Response;
+    		$Result["Duration"] = round($Duration * 1000, 2);
+		$this->SendDebug("Simple_Ping", "Dauer: ".$Duration. " Ergebnis: ".(boolval($Response)), 0);
+		
 	return serialize($Result);
 	}    
 	    
@@ -138,8 +153,7 @@
 		// Erfolg auswerten
 		$AVGPing = Round((array_sum($Ping)/count($Ping)) * 100, 2);
 		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AVGDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$AVGPing."%", 0);
-		//$Result[$IP]["Ping"] = $Response;
-		//$Result[$IP]["Duration"] = $Duration;
+		
 	return serialize($Result);
 	}    
 	
