@@ -78,7 +78,8 @@
 		$this->RegisterMessage($this->InstanceID, 10103);
 		$this->SetStatus(102);
 		
-		if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+		$MAC = $this->ReadPropertyString("MAC");
+		if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
 			$this->EnableAction("WOL");
 		}
 		else {
