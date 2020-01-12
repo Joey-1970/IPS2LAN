@@ -104,7 +104,7 @@
 		$MultiplePing = $this->ReadPropertyBoolean("MultiplePing");
 		If ($MultiplePing == false) {
 			$Result = unserialize($this->Simple_Ping());
-			If ($Response["Ping"] == true) {
+			If ($Result["Ping"] == true) {
 				$Ping = 3;
 				$SuccessRate = 100;
 			}
@@ -112,7 +112,7 @@
 				$Ping = 1;
 				$SuccessRate = 0;
 			}
-			$Duration = $Response["Duration"];
+			$Duration = $Result["Duration"];
 		}
 		else {
 			$Result = unserialize($this->Multiple_Ping());
