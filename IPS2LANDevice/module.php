@@ -120,8 +120,8 @@
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
 			SetValueInteger($this->GetIDForIdent("State"), $Ping);
 		}
-		If ($SuccessRate <> GetValueFloat($this->GetIDForIdent("SuccessRate"))) {
-			SetValueFloat($this->GetIDForIdent("SuccessRate"), $SuccessRate);
+		If ($SuccessRate <> GetValueInteger($this->GetIDForIdent("SuccessRate"))) {
+			SetValueInteger($this->GetIDForIdent("SuccessRate"), $SuccessRate);
 		}
 		SetValueInteger($this->GetIDForIdent("LastUpdate"), time() );
 		
