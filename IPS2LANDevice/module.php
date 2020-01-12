@@ -17,6 +17,7 @@
 		$this->RegisterPropertyString("IP", "");
 		$this->RegisterPropertyString("MAC", "");
 		$this->RegisterPropertyString("Name", "");
+		$this->RegisterPropertyBoolean("MultiplePing", false);
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
 		
@@ -43,6 +44,8 @@
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Name", "caption" => "Name");
 		$arrayElements[] = array("type" => "Label", "label" => "Aktualisierung");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "sek");
+		$arrayElements[] = array("type" => "Label", "label" => "Mehrfach-Ping nutzen");
+		$arrayElements[] = array("type" => "CheckBox", "name" => "MultiplePing", "caption" => "Mehrfach-Ping"); 
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		
 		
@@ -88,7 +91,13 @@
 	// Beginn der Funktionen
 	public function GetDataUpdate()
 	{
-		$this->Simple_Ping();
+		$MultiplePing = $this->ReadPropertyBoolean("MultiplePing");
+		If ($MultiplePing == false) {
+			$this->Simple_Ping();
+		}
+		else {
+			$this->Multiple_Ping();
+		}
 	}
 	
 	private function Simple_Ping()
@@ -107,9 +116,10 @@
 	return serialize($Result);
 	}    
 	    
-	private function Multiple_Ping($IP)
+	private function Multiple_Ping()
 	{
-    		$IP = $this->ReadPropertyString("IP");
+    		$this->SendDebug("Multiple_Ping", "Ausfuehrung", 0);
+		$IP = $this->ReadPropertyString("IP");
 		$Result = array();
 		$Ping = array();
 		$Duration = array();
@@ -121,13 +131,15 @@
 			$Ping[] = $Response;
 			
 		}
-		
-		$MinPing = min($Duration);
-		$AVGPing = array_sum($Duration)/count($Duration);
-		$MinPing = max($Duration);
-		
-		$Result[$IP]["Ping"] = $Response;
-		$Result[$IP]["Duration"] = $Duration;
+		// Ping-Werte berechnen
+		$MinDuration = round(min($Duration) * 1000, 2);
+		$AVGDuration = round((array_sum($Duration)/count($Duration)) * 1000, 2);
+		$MaxDuration = round(max($Duration) * 1000, 2);
+		// Erfolg auswerten
+		$AVGPing = Round((array_sum($Ping)/count($Ping)) * 100, 2);
+		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AVGDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$AVGPing."%", 0);
+		//$Result[$IP]["Ping"] = $Response;
+		//$Result[$IP]["Duration"] = $Duration;
 	return serialize($Result);
 	}    
 	
