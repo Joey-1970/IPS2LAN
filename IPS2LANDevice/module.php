@@ -134,7 +134,7 @@
 			SetValueFloat($this->GetIDForIdent("MinDuration"), $MinDuration);
 		}
 		If ($AvgDuration <> GetValueFloat($this->GetIDForIdent("AvgDuration"))) {
-			SetValueFloat($this->GetIDForIdent("AvgnDuration"), $AvgDuration);
+			SetValueFloat($this->GetIDForIdent("AvgDuration"), $AvgDuration);
 		}
 		If ($MaxDuration <> GetValueFloat($this->GetIDForIdent("MaxDuration"))) {
 			SetValueFloat($this->GetIDForIdent("MaxDuration"), $MaxDuration);
