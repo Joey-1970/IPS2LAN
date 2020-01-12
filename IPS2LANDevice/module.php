@@ -39,7 +39,8 @@
 		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 30);
 		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 40);
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
-		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 50);
+		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 60);
+		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 70);
         }
  	
 	public function GetConfigurationForm() 
@@ -77,11 +78,15 @@
 		$this->RegisterMessage($this->InstanceID, 10103);
 		$this->SetStatus(102);
 		
-		
-		
+		if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+			$this->EnableAction("WOL");
+		}
+		else {
+			$this->DisableAction("WOL");
+		}
 		
 		$IP = $this->ReadPropertyString("IP");
-		
+	
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
     			$this->SetSummary($IP);
 
@@ -104,6 +109,21 @@
 			
 		}
     	}
+	
+	public function RequestAction($Ident, $Value) 
+	{
+  		switch($Ident) {
+	        case "WOL":
+	            	If ($Value == true) { 
+				SetValueBoolean($this->GetIDForIdent("WOL"), true);
+				$this->WakeOnLAN();
+			}
+	            break;
+	 
+	        default:
+	            throw new Exception("Invalid Ident");
+	    	}
+	}    
 	    
 	// Beginn der Funktionen
 	public function GetDataUpdate()
@@ -155,6 +175,7 @@
     		$this->SendDebug("Simple_Ping", "Ausfuehrung", 0);
 		$IP = $this->ReadPropertyString("IP");
 		$MaxWaitTime = $this->ReadPropertyInteger("MaxWaitTime");
+		$MaxWaitTime = min(1000, max(50, $MaxWaitTime));
 		$Result = array();
 		$Start = microtime(true);
     		$Response = Sys_Ping($IP, $MaxWaitTime); 
@@ -171,7 +192,9 @@
     		$this->SendDebug("Multiple_Ping", "Ausfuehrung", 0);
 		$IP = $this->ReadPropertyString("IP");
 		$MaxWaitTime = $this->ReadPropertyInteger("MaxWaitTime");
+		$MaxWaitTime = min(1000, max(50, $MaxWaitTime));
 		$Tries = $this->ReadPropertyInteger("Tries");
+		$Tries = min(15, max(2, $Tries));
 		$Result = array();
 		$Ping = array();
 		$Duration = array();
@@ -241,6 +264,7 @@
 		else {
 			$this->SendDebug("WakeOnLAN", "Keine gueltige MAC verfügbar!", 0);
 		}
+		SetValueBoolean($this->GetIDForIdent("WOL"), false);
 	}    
 	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
