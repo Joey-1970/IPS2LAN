@@ -36,7 +36,7 @@
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 20);
 		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "", 30);
 		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 40);
-		$this->RegisterVariableFloat("AVGDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
+		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 50);
         }
  	
@@ -112,16 +112,32 @@
 				$Ping = 1;
 				$SuccessRate = 0;
 			}
-			$Duration = $Result["Duration"];
+			$MinDuration = $Result["Duration"];
+			$AvgDuration = $Result["Duration"];
+			$MaxDuration = $Result["Duration"];
 		}
 		else {
 			$Result = unserialize($this->Multiple_Ping());
+			$Ping = $Result["Ping"];
+			$SuccessRate = $Result["SuccessRate"];
+			$MinDuration = $Result["MinDuration"];
+			$AvgDuration = $Result["AvgDuration"];
+			$MaxDuration = $Result["MaxDuration"];
 		}
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
 			SetValueInteger($this->GetIDForIdent("State"), $Ping);
 		}
 		If ($SuccessRate <> GetValueInteger($this->GetIDForIdent("SuccessRate"))) {
 			SetValueInteger($this->GetIDForIdent("SuccessRate"), $SuccessRate);
+		}
+		If ($MinDuration <> GetValueFloat($this->GetIDForIdent("MinDuration"))) {
+			SetValueFloat($this->GetIDForIdent("MinDuration"), $MinDuration);
+		}
+		If ($AvgDuration <> GetValueFloat($this->GetIDForIdent("AvgDuration"))) {
+			SetValueFloat($this->GetIDForIdent("AvgnDuration"), $AvgDuration);
+		}
+		If ($MaxDuration <> GetValueFloat($this->GetIDForIdent("MaxDuration"))) {
+			SetValueFloat($this->GetIDForIdent("MaxDuration"), $MaxDuration);
 		}
 		SetValueInteger($this->GetIDForIdent("LastUpdate"), time() );
 		
@@ -159,12 +175,24 @@
 		}
 		// Ping-Werte berechnen
 		$MinDuration = round(min($Duration) * 1000, 2);
-		$AVGDuration = round((array_sum($Duration)/count($Duration)) * 1000, 2);
+		$AvgDuration = round((array_sum($Duration)/count($Duration)) * 1000, 2);
 		$MaxDuration = round(max($Duration) * 1000, 2);
 		// Erfolg auswerten
-		$AVGPing = Round((array_sum($Ping)/count($Ping)) * 100, 2);
-		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AVGDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$AVGPing."%", 0);
-		
+		$SuccessRate = Round((array_sum($Ping)/count($Ping)) * 100, 2);
+		$this->SendDebug("Multiple_Ping", "Min: ".$MinDuration."ms, Durchschnitt: ".$AVGDuration."ms, Max: ".$MaxDuration."ms, Erfolg: ".$SuccessRate."%", 0);
+		If ($SuccessRate == 100) {
+			$Result["Ping"] = 3;
+		}
+		elseif ($SuccessRate == 0) {
+			$Result["Ping"] = 1;
+		}
+		else {
+			$Result["Ping"] = 2;
+		}
+		$Result["SuccessRate"] = $SuccessRate;
+		$Result["MinDuration"] = $MinDuration;
+		$Result["AvgDuration"] = $AvgDuration;
+		$Result["MaxDuration"] = $MaxDuration;
 	return serialize($Result);
 	}    
 	
