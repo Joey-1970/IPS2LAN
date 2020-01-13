@@ -295,7 +295,7 @@
 		$OpenPorts = array();
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
 			for ($i = $PortScanStart; $i < $PortScanEnd; $i++) {
-				$fp = @fsockopen($IP, $portt, $errno, $errstr, 0.1);
+				$fp = @fsockopen($IP, $i, $errno, $errstr, 0.1);
 				if (!$fp) {
 					// keine Aktion
 				} else {
