@@ -44,7 +44,7 @@
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 60);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 70);
 		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 80);
-		$this->RegisterVariableString("OpenPorts", "keine Daten", "~TextBox", 90);
+		$this->RegisterVariableString("OpenPortsResult", "keine Daten", "~TextBox", 90);
 		
         }
  	
@@ -126,6 +126,12 @@
 	            	If ($Value == true) { 
 				SetValueBoolean($this->GetIDForIdent("WOL"), true);
 				$this->WakeOnLAN();
+			}
+	            break;
+		case "OpenPorts":
+	            	If ($Value == true) { 
+				SetValueBoolean($this->GetIDForIdent("OpenPorts"), true);
+				$this->OpenPorts();
 			}
 	            break;
 	 
@@ -277,11 +283,12 @@
 		SetValueBoolean($this->GetIDForIdent("WOL"), false);
 	}    
 	
-	private function Port($portt) 
+	private function OpenPorts() 
 	{
 		$IP = $this->ReadPropertyString("IP");
 		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
 		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
+		SetValueString($this->GetIDForIdent("OpenPortsText"), "Scan gestartet: ".time().chr 13);
 		$OpenPorts = array();
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
 			for ($i = $PortScanStart; $i < $PortScanEnd; $i++) {
@@ -290,10 +297,12 @@
 					// keine Aktion
 				} else {
 					fclose($fp);
+					SetValueString($this->GetIDForIdent("OpenPortsText"), GetValueString($this->GetIDForIdent("OpenPortsText")).$i.chr(13));
 					$OpenPorts() = $i
 				}
 			}
 		}
+		SetValueBoolean($this->GetIDForIdent("OpenPorts"), false);
 	return serialize($OpenPorts);
 	}   
 	    
