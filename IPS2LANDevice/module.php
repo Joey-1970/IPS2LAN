@@ -43,6 +43,9 @@
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 60);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 70);
+		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 80);
+		$this->RegisterVariableString("OpenPorts", "keine Daten", "~TextBox", 90);
+		
         }
  	
 	public function GetConfigurationForm() 
