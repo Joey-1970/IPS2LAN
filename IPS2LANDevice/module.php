@@ -20,6 +20,8 @@
 		$this->RegisterPropertyBoolean("MultiplePing", false);
 		$this->RegisterPropertyInteger("MaxWaitTime", 100);
 		$this->RegisterPropertyInteger("Tries", 5);
+		$this->RegisterPropertyInteger("PortScanStart", 0);
+		$this->RegisterPropertyInteger("PortScanEnd", 49151);
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
 		
@@ -65,7 +67,8 @@
 		$arrayElements[] = array("type" => "Label", "label" => "Anzahl der Mehrfach-Ping (2 - 15)");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Tries", "caption" => "Versuche");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
-		
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "PortScanStart", "caption" => "Port");
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "PortScanEnd", "caption" => "Port");
 		
  		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	}       
@@ -87,8 +90,10 @@
 		}
 		
 		$IP = $this->ReadPropertyString("IP");
+		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
+		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
 	
-		if (filter_var($IP, FILTER_VALIDATE_IP)) {
+		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd)) {
     			$this->SetSummary($IP);
 
 			$this->GetDataUpdate();
@@ -96,7 +101,7 @@
 		}
 		else {
 			$this->SetSummary("");
-			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar!", 0);
+			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar oder Scan-Ports unplausibel!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
 		}
 	}
@@ -232,10 +237,11 @@
 	
 	private function WakeOnLAN()
 	{
-    		$mac = $this->ReadPropertyString("MAC");
-		if (filter_var($mac, FILTER_VALIDATE_MAC)) {
+    		$this->SendDebug("WakeOnLAN", "Ausfuehrung", 0);
+		$MAC = $this->ReadPropertyString("MAC");
+		if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
 			$broadcast = "255.255.255.255";
-			$mac_array = preg_split('#:#', $mac);
+			$mac_array = preg_split('#:#', $MAC);
 			$hwaddr = '';
 			foreach($mac_array AS $octet)
 			{
@@ -267,6 +273,26 @@
 		}
 		SetValueBoolean($this->GetIDForIdent("WOL"), false);
 	}    
+	
+	private function Port($portt) 
+	{
+		$IP = $this->ReadPropertyString("IP");
+		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
+		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
+		$OpenPorts = array();
+		if (filter_var($IP, FILTER_VALIDATE_IP)) {
+			for ($i = $PortScanStart; $i < $PortScanEnd; $i++) {
+				$fp = @fsockopen($IP, $portt, $errno, $errstr, 0.1);
+				if (!$fp) {
+					// keine Aktion
+				} else {
+					fclose($fp);
+					$OpenPorts() = $i
+				}
+			}
+		}
+	return serialize($OpenPorts);
+	}   
 	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
 	{
