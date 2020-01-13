@@ -44,7 +44,7 @@
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 60);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 70);
 		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 80);
-		$this->RegisterVariableString("OpenPortsResult", "keine Daten", "~TextBox", 90);
+		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 90);
 		
         }
  	
