@@ -105,6 +105,7 @@
 		else {
 			$this->SetSummary("");
 			$this->DisableAction("OpenPorts");
+			$this->DisableAction("WOL");
 			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar oder Scan-Ports unplausibel!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
 		}
