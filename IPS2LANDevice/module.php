@@ -287,6 +287,7 @@
 	
 	private function OpenPorts() 
 	{
+		$this->SendDebug("OpenPorts", "Ausfuehrung", 0);
 		$IP = $this->ReadPropertyString("IP");
 		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
 		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
@@ -299,11 +300,13 @@
 					// keine Aktion
 				} else {
 					fclose($fp);
+					$this->SendDebug("OpenPorts", "Offener Port: .$i", 0);
 					SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult")).$i.chr(13));
 					$OpenPorts[$i] = "unbekannt";
 				}
 			}
 		}
+		SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult"))."Beendet");
 		SetValueBoolean($this->GetIDForIdent("OpenPorts"), false);
 	return serialize($OpenPorts);
 	}   
