@@ -90,7 +90,7 @@
 		$Devices = array();
 		$MAC = array();
 		
-		If ($BasicIP <> "undefinert") {
+		If (($BasicIP <> "undefinert") AND ($DeviceAdressStart <= $DeviceAdressEnd)) {
 			// Basic IP auflösen
 			$IP_Parts = explode(".", $BasicIP);
     			If (count($IP_Parts) == 4) {
