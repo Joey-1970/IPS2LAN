@@ -98,12 +98,13 @@
 	
 		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd)) {
     			$this->SetSummary($IP);
-
+			$this->EnableAction("OpenPorts");
 			$this->GetDataUpdate();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
 		}
 		else {
 			$this->SetSummary("");
+			$this->DisableAction("OpenPorts");
 			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar oder Scan-Ports unplausibel!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
 		}
