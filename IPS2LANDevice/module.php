@@ -291,7 +291,7 @@
 		$IP = $this->ReadPropertyString("IP");
 		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
 		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
-		SetValueString($this->GetIDForIdent("OpenPortsResult"), "Scan gestartet: ".time().chr(13));
+		SetValueString($this->GetIDForIdent("OpenPortsResult"), "Scan gestartet: ".date("d.m.Y H:i:s").chr(13));
 		$OpenPorts = array();
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
 			for ($i = $PortScanStart; $i < $PortScanEnd; $i++) {
