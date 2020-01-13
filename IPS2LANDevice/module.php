@@ -298,7 +298,7 @@
 				} else {
 					fclose($fp);
 					SetValueString($this->GetIDForIdent("OpenPortsText"), GetValueString($this->GetIDForIdent("OpenPortsText")).$i.chr(13));
-					$OpenPorts() = $i;
+					$OpenPorts[$i] = "unbekannt";
 				}
 			}
 		}
