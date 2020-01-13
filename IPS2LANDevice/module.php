@@ -306,7 +306,7 @@
 				}
 			}
 		}
-		SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult"))."Beendet");
+		SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult"))."Scan Beendet");
 		SetValueBoolean($this->GetIDForIdent("OpenPorts"), false);
 	return serialize($OpenPorts);
 	}   
