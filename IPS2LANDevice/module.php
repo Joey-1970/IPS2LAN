@@ -301,7 +301,7 @@
 				} else {
 					fclose($fp);
 					$this->SendDebug("OpenPorts", "Offener Port: .$i", 0);
-					SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult")).str_pad($i, 5, , STR_PAD_RIGHT).chr(9).getservbyport($i, "tcp").chr(13));
+					SetValueString($this->GetIDForIdent("OpenPortsResult"), GetValueString($this->GetIDForIdent("OpenPortsResult")).str_pad($i, 5, '.', STR_PAD_RIGHT).chr(9).getservbyport($i, "tcp").chr(13));
 					$OpenPorts[$i] = "unbekannt";
 				}
 			}
