@@ -71,14 +71,10 @@
 			
 			$arrayCreate = array();
 			$arrayCreate[] = array("moduleID" => "{D43B786D-F3F7-53A2-1434-79C975AA4408}", "location" => $RootNames, 
-					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60)); //"postion" => $Category, "info" => $Values["Name"],
+					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60));
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"],
-					       "create" => $arrayCreate); // , "id" => $Category
-			/*
-			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
-					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"]);
-			*/
+					       "create" => $arrayCreate);
 		}
 		
 		$arrayElements[] = array("type" => "Configurator", "name" => "Network", "caption" => "Netzwerk", "rowCount" => 20, "delete" => false, "sort" => $arraySort, "columns" => $arrayColumns, "values" => $arrayValues);
