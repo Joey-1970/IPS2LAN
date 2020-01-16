@@ -39,7 +39,7 @@
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
 		
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
-		//$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
+		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		//$arraySort = array("column" => "IP", "direction" => "ascending");
@@ -52,6 +52,17 @@
 		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => false);
 		
 		$Category = $this->ReadPropertyInteger("Category");
+		$RootNames = [];
+		$RootId = $Category;
+		while ($RootId != 0) {
+		    	if ($RootId != 0) {
+				$RootNames[] = IPS_GetName($RootId);
+		    	}
+		    	$RootId = IPS_GetParent($RootId);
+			}
+		$RootNames = array_reverse($RootNames);
+		
+		
 		$DeviceArray = array();
 		$DeviceArray = unserialize($this->GetData());
 		
@@ -59,7 +70,7 @@
 		foreach ($DeviceArray as $IP => $Values) {
 			
 			$arrayCreate = array();
-			$arrayCreate[] = array("moduleID" => "{D43B786D-F3F7-53A2-1434-79C975AA4408}", 
+			$arrayCreate[] = array("moduleID" => "{D43B786D-F3F7-53A2-1434-79C975AA4408}", "location" => $RootNames, 
 					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60)); //"postion" => $Category, "info" => $Values["Name"],
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"],
