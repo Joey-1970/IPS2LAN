@@ -139,9 +139,9 @@
 
 		$devices = array();
 
-		$Search = array("auf", "[ether]", "eth0", "(", ")");
-		$Replace = array("", "", "", "", "");
-
+		$Search = array("auf", "[ether]", "eth0", "(", ")", "at", "on");
+		$Replace = array("", "", "", "", "", "", "");
+		
 		$Devices = array();
 
 		foreach ($Lines as $Line) {
