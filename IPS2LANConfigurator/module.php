@@ -39,7 +39,7 @@
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
 		
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
-		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
+		//$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		//$arraySort = array("column" => "IP", "direction" => "ascending");
@@ -63,7 +63,7 @@
 					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60));
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"],
-					       "create" => $arrayCreate, "id" => $Category);
+					       "create" => $arrayCreate); // , "id" => $Category
 			/*
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"]);
