@@ -11,6 +11,7 @@
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
 		$this->RegisterPropertyString("BasicIP", "undefiniert"); 
+		$this->RegisterPropertyInteger("Category", 0);  
         }
  	
 	public function GetConfigurationForm() 
@@ -36,7 +37,9 @@
 		$ArrayRowLayout[] = array("type" => "Label", "label" => "Geräte-Adressbereich");
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressStart", "caption" => "Start", "digits" => 0);
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
+		
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
+		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		//$arraySort = array("column" => "IP", "direction" => "ascending");
@@ -48,6 +51,7 @@
 		$arrayColumns[] = array("caption" => "Ping (ms)", "name" => "Duration", "width" => "100px", "visible" => true);
 		$arrayColumns[] = array("caption" => "Status", "name" => "State", "width" => "auto", "visible" => false);
 		
+		$Category = $this->ReadPropertyInteger("Category");
 		$DeviceArray = array();
 		$DeviceArray = unserialize($this->GetData());
 		
@@ -59,7 +63,7 @@
 					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60));
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"],
-					       "create" => $arrayCreate);
+					       "create" => $arrayCreate, "parent" => $Category);
 			/*
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"]);
