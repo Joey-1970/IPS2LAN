@@ -150,8 +150,8 @@
 
 		$devices = array();
 
-		$Search = array("auf", "[ether]", "eth0", "(", ")", "at", "on");
-		$Replace = array("", "", "", "", "", "", "");
+		$Search = array(" auf ", "[ether]", "eth0", "(", ")", " at ", " on ");
+		$Replace = array(" ", " ", " ", " ", " ", " ", " ");
 		
 		$Devices = array();
 
