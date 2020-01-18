@@ -73,7 +73,7 @@
 			$arrayCreate[] = array("moduleID" => "{D43B786D-F3F7-53A2-1434-79C975AA4408}", "location" => $RootNames, 
 					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60));
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
-					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "instanceID" => $Values["InstanceID"],
+					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "name" => $Values["Name"], "instanceID" => $Values["InstanceID"],
 					       "create" => $arrayCreate);
 		}
 		
