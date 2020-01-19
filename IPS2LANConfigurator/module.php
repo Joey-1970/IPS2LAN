@@ -140,6 +140,10 @@
 							$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
 							$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
 						}
+						elseif ($IP.$i == $OwnIP) {
+							$Devices[$IP.$i]["Name"] = "dieses Gerät";
+							$Devices[$IP.$i]["MAC"] = "dieses Gerät";
+						}
 						else {
 							$Devices[$IP.$i]["Name"] = "nicht verfügbar";
 							$Devices[$IP.$i]["MAC"] = "";
