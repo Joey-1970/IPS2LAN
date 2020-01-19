@@ -10,7 +10,9 @@
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
+		$this->RegisterPropertyString("IP", "undefiniert"); 
 		$this->RegisterPropertyString("BasicIP", "undefiniert"); 
+		$this->RegisterPropertyString("OwnIP", "undefiniert"); 
 		$this->RegisterPropertyInteger("Category", 0);
 		$this->RegisterPropertyBoolean("MultiplePing", false);
         }
@@ -26,12 +28,16 @@
 		$arrayElements = array(); 
 		$arrayOptions = array();
 		$IP = unserialize($this->IP());
-		$arrayOptions[] = array("label" => "undefiniert", "value" => "undefiniert");
+		$arrayValues = array("name" => "BasicIP", "value" => "undefiniert", "name" => "OwnIP", "value" => "undefiniert");
+		$arrayOptions[] = array("label" => "undefiniert", "value" => $arrayValues);
 		foreach($IP AS $Network) {
-			$arrayOptions[] = array("label" => $Network, "value" => $Network);
+			$arrayValues = array();
+			$IP_Parts = explode(".", $Network);
+			$arrayValues = array("name" => "BasicIP", "value" => $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx", "name" => "OwnIP", "value" => $Network);
+			$arrayOptions[] = array("label" => $Network, "value" => $arrayValues);
 		}
 		
-		$arrayElements[] = array("type" => "Select", "name" => "BasicIP", "caption" => "Netzwerk", "options" => $arrayOptions );
+		$arrayElements[] = array("type" => "Select", "name" => "IP", "caption" => "Netzwerk", "options" => $arrayOptions );
 
 		
 		$ArrayRowLayout = array();
@@ -91,8 +97,9 @@
         {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		
-		
+		$BasicIP = $this->ReadPropertyString("BasicIP");
+		$OwnIP = $this->ReadPropertyString("OwnIP");
+		$this->SendDebug("ApplyChanges", "Basis IP: ".$BasicIP." Eigene IP: ".$OwnIP, 0);
 	}
 	    
 	// Beginn der Funktionen
@@ -101,6 +108,7 @@
 		$DeviceAdressStart = $this->ReadPropertyInteger("DeviceAdressStart");
 		$DeviceAdressEnd = $this->ReadPropertyInteger("DeviceAdressEnd");
 		$BasicIP = $this->ReadPropertyString("BasicIP");
+		$OwnIP = $this->ReadPropertyString("OwnIP");
 		$MultiplePing = $this->ReadPropertyBoolean("MultiplePing");
 		$Devices = array();
 		$MAC = array();
@@ -211,7 +219,8 @@
 		foreach ($IPArray as $Network) {
     			$IP_Parts = explode(".", $Network["IP"]);
     			If (count($IP_Parts) == 4) {
-        			$IP[] = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx";
+        			//$IP[] = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx";
+				$IP[] = $Network["IP"];
     			}
 		}
 	return serialize($IP);
