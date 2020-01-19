@@ -142,7 +142,7 @@
 						}
 						elseif ($IP.$i == $OwnIP) {
 							$Devices[$IP.$i]["Name"] = "dieses Gerät";
-							$Devices[$IP.$i]["MAC"] = "dieses Gerät";
+							$Devices[$IP.$i]["MAC"] = $this->OwnMAC($OwnIP);
 						}
 						else {
 							$Devices[$IP.$i]["Name"] = "nicht verfügbar";
@@ -233,6 +233,19 @@
     			}
 		}
 	return serialize($IP);
+	}
+	
+	private function OwnMAC($OwnIP)
+	{
+	    	$IPArray = array();
+		$IPArray = Sys_GetNetworkInfo();
+		$MAC = "nicht verfügbar";
+		foreach ($IPArray as $Network) {
+    			If ($Network["IP"] == $OwnIP) {
+        			$MAC = $Network["MAC"];
+    			}
+		}
+	return $MAC;
 	}
 	    
 	function GetDeviceInstanceID(string $IP)
