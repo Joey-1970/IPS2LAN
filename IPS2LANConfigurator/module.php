@@ -141,7 +141,7 @@
 							$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
 						}
 						elseif ($IP.$i == $OwnIP) {
-							$Devices[$IP.$i]["Name"] = "dieses Gerät";
+							$Devices[$IP.$i]["Name"] = gethostname();
 							$Devices[$IP.$i]["MAC"] = $this->OwnMAC($OwnIP);
 						}
 						else {
