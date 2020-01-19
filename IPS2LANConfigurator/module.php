@@ -10,7 +10,7 @@
             	parent::Create();
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
-		$this->RegisterPropertyString("IP", "undefiniert"); 
+		$this->RegisterPropertyInteger("IP", 0); 
 		$this->RegisterPropertyString("BasicIP", "undefiniert"); 
 		$this->RegisterPropertyString("OwnIP", "undefiniert"); 
 		$this->RegisterPropertyInteger("Category", 0);
