@@ -28,13 +28,15 @@
 		$arrayElements = array(); 
 		$arrayOptions = array();
 		$IP = unserialize($this->IP());
-		$arrayValues = array("name" => "BasicIP", "value" => "undefiniert", "name" => "OwnIP", "value" => "undefiniert");
+		$arrayValues[] = array("name" => "BasicIP", "value" => "undefiniert");
+		$arrayValues[] = array("name" => "OwnIP", "value" => "undefiniert");
 		$arrayOptions[] = array("caption" => "undefiniert", "value" => $arrayValues);
 		foreach($IP AS $Network) {
 			$arrayValues = array();
 			$IP_Parts = explode(".", $Network);
 			$BasicIP = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx";
-			$arrayValues = array("name" => "BasicIP", "value" => $BasicIP, "name" => "OwnIP", "value" => $Network);
+			$arrayValues[] = array("name" => "BasicIP", "value" => $BasicIP);
+			$arrayValues[] = array("name" => "OwnIP", "value" => $Network);
 			$arrayOptions[] = array("caption" => $BasicIP, "value" => $arrayValues);
 		}
 		
