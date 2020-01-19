@@ -207,7 +207,7 @@
     			$Cols = preg_split('/\s+/', trim($Line));
     			If (Count($Cols) == 3) {
         			$Devices[$Cols[1]]["Name"] = $Cols[0];
-        			if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
+        			if (filter_var($Cols[2], FILTER_VALIDATE_MAC)) {
 					$Devices[$Cols[1]]["MAC"] = $Cols[2];
 				}
 				else {
