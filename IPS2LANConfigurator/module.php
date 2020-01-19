@@ -44,7 +44,7 @@
 
 		
 		$ArrayRowLayout = array();
-		$ArrayRowLayout[] = array("type" => "Label", "label" => "Geräte-Adressbereich");
+		$ArrayRowLayout[] = array("type" => "Label", "label" => "Geräte-Adressbereich    ");
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressStart", "caption" => "Start", "digits" => 0);
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
 		
