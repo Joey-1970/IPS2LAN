@@ -167,7 +167,7 @@
 			$Ping[] = $Response;
 		}
 		// Ping-Werte berechnen
-		$AvgDuration = round((array_sum($Duration)/count($Duration)) * 1000, 2);
+		$AvgDuration = array_sum($Duration)/count($Duration);
 		// Erfolg auswerten
 		$SuccessRate = Round((array_sum($Ping)/count($Ping)) * 100, 2);
 		If ($SuccessRate > 0) {
