@@ -7,8 +7,8 @@
   [
     "IPS2LANDevice"
   ],
-  "parentRequirements": [],
+  "parentRequirements": ["{31F3B680-3AD6-4C50-EC4B-ED0A21656029}"],
   "childRequirements": [],
-  "implemented": [],
+  "implemented": ["{AD612502-D7E4-A92E-88EB-6ED61B53A591}"],
   "prefix": "IPS2LANDevice"
 }
