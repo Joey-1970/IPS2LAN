@@ -207,7 +207,12 @@
     			$Cols = preg_split('/\s+/', trim($Line));
     			If (Count($Cols) == 3) {
         			$Devices[$Cols[1]]["Name"] = $Cols[0];
-        			$Devices[$Cols[1]]["MAC"] = $Cols[2];
+        			if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
+					$Devices[$Cols[1]]["MAC"] = $Cols[2];
+				}
+				else {
+					$Devices[$Cols[1]]["MAC"] = "nicht verfügbar";
+				}
     			}
 		}
 	return serialize($Devices);
@@ -219,9 +224,7 @@
 		$IPArray = Sys_GetNetworkInfo();
 		$IP = array();
 		foreach ($IPArray as $Network) {
-    			$IP_Parts = explode(".", $Network["IP"]);
-    			If (count($IP_Parts) == 4) {
-        			//$IP[] = $IP_Parts[0].".".$IP_Parts[1].".".$IP_Parts[2].".xxx";
+			if (filter_var($Network["IP"], FILTER_VALIDATE_IP)) {
 				$IP[] = $Network["IP"];
     			}
 		}
