@@ -1,0 +1,14 @@
+{
+  "id": "{8A7D4A56-3D60-081E-AC65-D839FAC66611}",
+  "name": "IPS2LANSummary",
+  "type": 3,
+  "vendor": "JP-IPS-Modules",
+  "aliases":
+  [
+    "IPS2LANSummary"
+  ],
+  "parentRequirements": [],
+  "childRequirements": ["{AD612502-D7E4-A92E-88EB-6ED61B53A591}"],
+  "implemented": ["{31F3B680-3AD6-4C50-EC4B-ED0A21656029}"],
+  "prefix": "IPS2LANSummary"
+}
