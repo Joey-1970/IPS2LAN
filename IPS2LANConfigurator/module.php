@@ -11,7 +11,8 @@
 		$this->RegisterPropertyInteger("DeviceAdressStart", 1);  
 		$this->RegisterPropertyInteger("DeviceAdressEnd", 254); 
 		$this->RegisterPropertyString("BasicIP", "undefiniert"); 
-		$this->RegisterPropertyInteger("Category", 0);  
+		$this->RegisterPropertyInteger("Category", 0);
+		$this->RegisterPropertyBoolean("MultiplePing", false);
         }
  	
 	public function GetConfigurationForm() 
@@ -39,7 +40,9 @@
 		$ArrayRowLayout[] = array("type" => "NumberSpinner", "name" => "DeviceAdressEnd", "caption" => "Ende", "digits" => 0);
 		
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
-		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie");
+		$arrayElements[] = array("type" => "Label", "label" => "Mehrfach-Ping nutzen");
+		$arrayElements[] = array("type" => "CheckBox", "name" => "MultiplePing", "caption" => "Mehrfach-Ping"); 
+		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie beim Erstellen");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		//$arraySort = array("column" => "IP", "direction" => "ascending");
@@ -98,6 +101,7 @@
 		$DeviceAdressStart = $this->ReadPropertyInteger("DeviceAdressStart");
 		$DeviceAdressEnd = $this->ReadPropertyInteger("DeviceAdressEnd");
 		$BasicIP = $this->ReadPropertyString("BasicIP");
+		$MultiplePing = $this->ReadPropertyBoolean("MultiplePing");
 		$Devices = array();
 		$MAC = array();
 		
@@ -111,7 +115,13 @@
 				$MAC = unserialize($this->MAC());
 
 				for ($i = $DeviceAdressStart; $i <= $DeviceAdressEnd; $i++) {
-					$Response = unserialize($this->Ping($IP.$i));
+					
+					If ($MultiplePing == false) {
+						$Response = unserialize($this->Ping($IP.$i));
+					}
+					else {
+						$Response = unserialize($this->Multiple_Ping($IP.$i));
+					}
 
 					If ($Response[$IP.$i]["Ping"] == true) {
 						$Devices[$IP.$i]["Ping"] = true;
@@ -136,12 +146,39 @@
 	{
     		$Result = array();
 		$Start = microtime(true);
-    		$Response = Sys_Ping($IP, 100); 
+    		$Response = Sys_Ping($IP, 50); 
     		$Duration = microtime(true) - $Start;
     		$Result[$IP]["Ping"] = $Response;
     		$Result[$IP]["Duration"] = $Duration;
 	return serialize($Result);
 	}
+	    
+	private function Multiple_Ping($IP)
+	{
+		$Tries = 5;
+		$Result = array();
+		$Ping = array();
+		$Duration = array();
+		
+		for ($i = 0; $i < $Tries; $i++) {
+			$Start = microtime(true);
+			$Response = Sys_Ping($IP, 50); 
+			$Duration[] = microtime(true) - $Start;
+			$Ping[] = $Response;
+		}
+		// Ping-Werte berechnen
+		$AvgDuration = round((array_sum($Duration)/count($Duration)) * 1000, 2);
+		// Erfolg auswerten
+		$SuccessRate = Round((array_sum($Ping)/count($Ping)) * 100, 2);
+		If ($SuccessRate > 0) {
+			$Result[$IP]["Ping"] = true;
+		}
+		else {
+			$Result[$IP]["Ping"] = false;
+		}
+		$Result[$IP]["Duration"] = $AvgDuration;
+	return serialize($Result);
+	} 
 	    
 	private function MAC()
 	{
