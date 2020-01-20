@@ -24,6 +24,7 @@
 		$this->RegisterPropertyInteger("PortScanEnd", 49151);
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
+		$this->ConnectParent("{8A7D4A56-3D60-081E-AC65-D839FAC66611}");
 		
 		
 		// Profil anlegen
