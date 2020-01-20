@@ -77,7 +77,8 @@
 				$InstanceID = $data->InstanceID;
 				$Name = $data->Name;
 				$State = $data->State;
-				$this->RegisterVariableInteger($InstanceID, $Name, "IPS2LAN.State", 20);
+				$Position = $data->Position;
+				$this->RegisterVariableInteger($InstanceID, $Name, "IPS2LAN.State", $Position);
 				SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 				break;
 			case "SetState":
