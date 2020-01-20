@@ -171,6 +171,8 @@
 		}
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
 			SetValueInteger($this->GetIDForIdent("State"), $Ping);
+			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
+				"Function" => "SetState", "InstanceID" => $this->InstanceID)));
 		}
 		If ($SuccessRate <> GetValueInteger($this->GetIDForIdent("SuccessRate"))) {
 			SetValueInteger($this->GetIDForIdent("SuccessRate"), $SuccessRate);
