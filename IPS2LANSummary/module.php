@@ -15,7 +15,7 @@
             	// Diese Zeile nicht löschen.
             	parent::Create();
 		
-		
+		$this->RegisterPropertyBoolean("Open", false);
 		
 		// Profil anlegen
 		$this->RegisterProfileInteger("IPS2LAN.State", "Information", "", "", 0, 3, 1);
@@ -39,7 +39,9 @@
 		$arrayStatus[] = array("code" => 202, "icon" => "error", "caption" => "Kommunikationfehler!");
 				
 		$arrayElements = array(); 
-		
+		$arrayElements[] = array("name" => "Open", "type" => "CheckBox",  "caption" => "Aktiv");
+		$arrayElements[] = array("type" => "Label", "label" => "Unvollendet!");
+
 		
  		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	}       
