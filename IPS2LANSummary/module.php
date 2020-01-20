@@ -79,10 +79,16 @@
 				$State = $data->State;
 				$Position = $data->Position;
 				$this->RegisterVariableInteger($InstanceID, $Name, "IPS2LAN.State", $Position);
+				If (IPS_GetName($this->GetIDForIdent($InstanceID)) <> $Name) {
+					IPS_SetName($this->GetIDForIdent($InstanceID), $Name);
+				}
 				SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 				break;
 			case "SetState":
 				$this->SendDebug("ForwardData", "SetState", 0);
+				$InstanceID = $data->InstanceID;
+				$State = $data->State;
+				SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 				break;
 			
 		}
