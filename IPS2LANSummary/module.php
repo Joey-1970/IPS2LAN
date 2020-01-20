@@ -49,7 +49,7 @@
         {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		
+		$this->GetChildrensID();
 		
 	}
 	
@@ -66,7 +66,15 @@
 
 	    
 	// Beginn der Funktionen
-
+	private function GetChildrensID()
+	{
+		$InstanceIDs = IPS_GetInstanceList();
+		foreach($InstanceIDs as $IID) {
+    			if(IPS_GetInstance($IID)['ConnectionID'] == $this->InstanceID) {
+        			$this->SendDebug("GetChildrensID", "ChildrensID: ".$IID . PHP_EOL, 0);
+			}
+		}
+	}
 
 	    
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
