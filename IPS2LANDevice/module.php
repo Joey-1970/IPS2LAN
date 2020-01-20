@@ -97,6 +97,7 @@
 		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
 		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
 		$Name = $this->ReadPropertyString("Name");
+		$State = GetValueInteger($this->GetIDForIdent("State"));
 	
 		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd)) {
     			$this->SetSummary($IP);
@@ -104,7 +105,7 @@
 			$this->GetDataUpdate();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
 			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
-				"Function" => "SetInstance", "InstanceID" => $this->InstanceID, "Name" => $Name)));
+				"Function" => "SetInstance", "InstanceID" => $this->InstanceID, "Name" => $Name, "State" => $State)));
 		}
 		else {
 			$this->SetSummary("");
