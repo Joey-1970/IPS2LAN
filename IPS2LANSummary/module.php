@@ -88,7 +88,9 @@
 				$this->SendDebug("ForwardData", "SetState", 0);
 				$InstanceID = $data->InstanceID;
 				$State = $data->State;
-				@SetValueInteger($this->GetIDForIdent($InstanceID), $State);
+				If ($State <> @GetValueInteger($this->GetIDForIdent($InstanceID))) {
+					@SetValueInteger($this->GetIDForIdent($InstanceID), $State);
+				}
 				break;
 			
 		}
