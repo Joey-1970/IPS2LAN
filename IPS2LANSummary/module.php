@@ -70,9 +70,15 @@
 	 	// Empfangene Daten von der Device Instanz
 	    	$data = json_decode($JSONString);
 	    	$Result = -999;
-	 	switch ($data->Function) {
+	 	
+		switch ($data->Function) {
 			case "SetInstance":
 				$this->SendDebug("ForwardData", "SetInstance", 0);
+				$InstanceID = $data->InstanceID;
+				$Name = $data->Name;
+				$State = $data->State;
+				$this->RegisterVariableInteger($InstanceID, $Name, "IPS2LAN.State", 20);
+				SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 				break;
 			case "SetState":
 				$this->SendDebug("ForwardData", "SetState", 0);
@@ -90,6 +96,7 @@
 		foreach($InstanceIDs as $IID) {
     			if(IPS_GetInstance($IID)['ConnectionID'] == $this->InstanceID) {
         			$this->SendDebug("GetChildrensID", "ChildrensID: ".$IID . PHP_EOL, 0);
+				
 			}
 		}
 	}
