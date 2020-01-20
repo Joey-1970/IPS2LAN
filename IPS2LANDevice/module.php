@@ -104,8 +104,10 @@
 			$this->EnableAction("OpenPorts");
 			$this->GetDataUpdate();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
+			$IP_Parts = explode(".", $IP);
+			$Position = $IP_Parts[3] * 10;
 			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
-				"Function" => "SetInstance", "InstanceID" => $this->InstanceID, "Name" => $Name, "State" => $State)));
+				"Function" => "SetInstance", "InstanceID" => $this->InstanceID, "Name" => $Name, "State" => $State, "Position" => $Position)));
 		}
 		else {
 			$this->SetSummary("");
