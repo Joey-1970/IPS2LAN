@@ -65,6 +65,22 @@
 		}
     	}
 	
+	public function ForwardData($JSONString) 
+	 {
+	 	// Empfangene Daten von der Device Instanz
+	    	$data = json_decode($JSONString);
+	    	$Result = -999;
+	 	switch ($data->Function) {
+			case "SetInstance":
+				$this->SendDebug("ForwardData", "SetInstance", 0);
+				break;
+			case "SetState":
+				$this->SendDebug("ForwardData", "SetState", 0);
+				break;
+			
+		}
+	return $Result;
+	}
 
 	    
 	// Beginn der Funktionen
