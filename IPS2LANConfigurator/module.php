@@ -137,7 +137,12 @@
 						$Devices[$IP.$i]["Ping"] = true;
 						$Devices[$IP.$i]["Duration"] = round($Response[$IP.$i]["Duration"] * 1000, 3);
 						if (array_key_exists($IP.$i, $MAC)) {
-							$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
+							If ($MAC[$IP.$i]["Name"] <> "?") {
+								$Devices[$IP.$i]["Name"] = $MAC[$IP.$i]["Name"];
+							}
+							else {
+								$Devices[$IP.$i]["Name"] = "nicht verfügbar";
+							}
 							$Devices[$IP.$i]["MAC"] = $MAC[$IP.$i]["MAC"];
 						}
 						elseif ($IP.$i == $OwnIP) {
@@ -146,7 +151,7 @@
 						}
 						else {
 							$Devices[$IP.$i]["Name"] = "nicht verfügbar";
-							$Devices[$IP.$i]["MAC"] = "";
+							$Devices[$IP.$i]["MAC"] = "nicht verfügbar";
 						}
 						$Devices[$IP.$i]["InstanceID"] = $this->GetDeviceInstanceID($IP.$i);
 					}
