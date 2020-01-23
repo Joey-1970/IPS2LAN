@@ -88,7 +88,7 @@
 				$this->SendDebug("ForwardData", "SetState", 0);
 				$InstanceID = $data->InstanceID;
 				$State = $data->State;
-				if (IPS_InstanceExists($this->GetIDForIdent($InstanceID))) {
+				if (IPS_ObjectExists($this->GetIDForIdent($InstanceID))) {
 					If ($State <> GetValueInteger($this->GetIDForIdent($InstanceID))) {
 						SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 					}
