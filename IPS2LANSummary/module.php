@@ -88,8 +88,8 @@
 				$this->SendDebug("ForwardData", "SetState", 0);
 				$InstanceID = $data->InstanceID;
 				$State = $data->State;
-				/*
-				if (IPS_ObjectExists($this->GetIDForIdent($InstanceID))) {
+				
+				if ($this->GetIDForIdent($InstanceID) <> false) {
 					If ($State <> GetValueInteger($this->GetIDForIdent($InstanceID))) {
 						SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 					}
@@ -97,10 +97,12 @@
 				else {
 					$this->SendDebug("ForwardData", "SetState: Instanz existiert (noch) nicht!", 0);
 				}
-				*/
+				/*
+				
 				If ($State <> @GetValueInteger($this->GetIDForIdent($InstanceID))) {
 					@SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 				}
+				*/
 				break;
 			
 		}
