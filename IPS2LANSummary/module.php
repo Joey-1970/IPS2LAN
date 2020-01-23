@@ -89,7 +89,7 @@
 				$InstanceID = $data->InstanceID;
 				$State = $data->State;
 				
-				if ($this->GetIDForIdent($InstanceID) <> false) {
+				if (@$this->GetIDForIdent($InstanceID) <> false) {
 					If ($State <> GetValueInteger($this->GetIDForIdent($InstanceID))) {
 						SetValueInteger($this->GetIDForIdent($InstanceID), $State);
 					}
