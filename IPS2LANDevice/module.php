@@ -48,8 +48,9 @@
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 80);
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 90);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 100);
-		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 110);
-		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 120);
+		$this->RegisterVariableBoolean("GUI", "GUI", "~Switch", 110);
+		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 120);
+		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 130);
 		
         }
  	
@@ -112,6 +113,7 @@
 			SetValueString($this->GetIDForIdent("Location"), $Location);
 			$this->EnableAction("OpenPorts");
 			$this->GetDataUpdate();
+			$this->GUI();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
 			$IP_Parts = explode(".", $IP);
 			$Position = $IP_Parts[3] * 10;
@@ -302,7 +304,26 @@
 			$this->SendDebug("WakeOnLAN", "Keine gueltige MAC verfügbar!", 0);
 		}
 		SetValueBoolean($this->GetIDForIdent("WOL"), false);
-	}    
+	}  
+	    
+	private function GUI() 
+	{
+		$this->SendDebug("GUI", "Ausfuehrung", 0);
+		$IP = $this->ReadPropertyString("IP");
+		$Result = false; 
+		
+		if (filter_var($IP, FILTER_VALIDATE_IP)) {
+			$fp = @fsockopen($IP, 80, $errno, $errstr, 0.1);
+			if (!$fp) {
+				SetValueBoolean($this->GetIDForIdent("GUI"), false);
+			} else {
+				fclose($fp);
+				SetValueBoolean($this->GetIDForIdent("GUI"), true);
+				$Result = true; 
+			}
+		}
+	return $Result;
+	}   
 	
 	private function OpenPorts() 
 	{
