@@ -40,7 +40,7 @@
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		$this->RegisterVariableString("IP", "IP", "~String", 20);
-		$this->RegisterVariableString("Hostname", "Hostname", "~String", 30);
+		$this->RegisterVariableString("Name", "Hostname", "~String", 30);
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 40);
 		$this->RegisterVariableString("Location", "Lokalisierung", "~String", 50);
 		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 60);
