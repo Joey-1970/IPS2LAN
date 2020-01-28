@@ -35,6 +35,11 @@
 		IPS_SetVariableProfileAssociation("IPS2LAN.State", 2, "Störung", "Alert", 0xFFFF00);
 		IPS_SetVariableProfileAssociation("IPS2LAN.State", 3, "Online", "Network", 0x00FF00);
 		
+		$this->RegisterProfileInteger("IPS2LAN.GUI", "Information", "", "", 0, 3, 1);
+		IPS_SetVariableProfileAssociation("IPS2LAN.GUI", 0, "Unbekannt", "Information", -1);
+		IPS_SetVariableProfileAssociation("IPS2LAN.GUI", 1, "Nein", "Close", 0xFF0000);
+		IPS_SetVariableProfileAssociation("IPS2LAN.GUI", 2, "Ja", "Notebook", 0x00FF00);
+		
 		$this->RegisterProfileFloat("IPS2LAN.ms", "Clock", "", " ms", 0, 1000, 0.001, 3);
 		
 		// Status-Variablen anlegen		
@@ -48,7 +53,7 @@
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 80);
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 90);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 100);
-		$this->RegisterVariableBoolean("GUI", "GUI", "~Switch", 110);
+		$this->RegisterVariableInteger("GUI", "GUI", "IPS2LAN.GUI", 110);
 		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 120);
 		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 130);
 		
@@ -90,6 +95,8 @@
             	parent::ApplyChanges();
 		$this->RegisterMessage($this->InstanceID, 10103);
 		$this->SetStatus(102);
+		
+		SetValueInteger($this->GetIDForIdent("GUI"), 0);
 		
 		$MAC = $this->ReadPropertyString("MAC");
 		if (filter_var($MAC, FILTER_VALIDATE_MAC)) {
@@ -315,10 +322,10 @@
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
 			$fp = @fsockopen($IP, 80, $errno, $errstr, 0.1);
 			if (!$fp) {
-				SetValueBoolean($this->GetIDForIdent("GUI"), false);
+				SetValueInteger($this->GetIDForIdent("GUI"), 1);
 			} else {
 				fclose($fp);
-				SetValueBoolean($this->GetIDForIdent("GUI"), true);
+				SetValueInteger($this->GetIDForIdent("GUI"), 2);
 				$Result = true; 
 			}
 		}
