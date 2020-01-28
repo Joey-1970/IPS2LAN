@@ -14,6 +14,8 @@
 		$this->RegisterPropertyString("OwnIP", "undefiniert"); 
 		$this->RegisterPropertyInteger("Category", 0);
 		$this->RegisterPropertyBoolean("MultiplePing", false);
+		$this->RegisterPropertyBoolean("InstanceMultiplePing", false);
+		$this->RegisterPropertyInteger("InstanceTimer", 60); 
         }
  	
 	public function GetConfigurationForm() 
@@ -50,7 +52,11 @@
 		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
 		$arrayElements[] = array("type" => "Label", "label" => "Mehrfach-Ping nutzen");
 		$arrayElements[] = array("type" => "CheckBox", "name" => "MultiplePing", "caption" => "Mehrfach-Ping"); 
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "Label", "label" => "Optionen für die hieraus erstellten Geräte-Instanzen");
 		$arrayElements[] = array("type" => "SelectCategory", "name" => "Category", "caption" => "Zielkategorie beim Erstellen");
+		$arrayElements[] = array("type" => "CheckBox", "name" => "InstanceMultiplePing", "caption" => "Mehrfach-Ping"); 
+		$arrayElements[] = array("type" => "IntervalBox", "name" => "InstanceTimer", "caption" => "sek");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arraySort = array();
 		//$arraySort = array("column" => "IP", "direction" => "ascending");
@@ -77,12 +83,15 @@
 		$DeviceArray = array();
 		$DeviceArray = unserialize($this->GetData());
 		
+		$InstanceTimer = $this->ReadPropertyInteger("InstanceTimer");
+		$InstanceMultiplePing = $this->ReadPropertyBoolean("InstanceMultiplePing");
+			
 		$arrayValues = array();
 		foreach ($DeviceArray as $IP => $Values) {
 			
 			$arrayCreate = array();
 			$arrayCreate[] = array("moduleID" => "{D43B786D-F3F7-53A2-1434-79C975AA4408}", "location" => $RootNames, 
-					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => 60));
+					       "configuration" => array("IP" => $IP, "MAC" => $Values["MAC"], "Name" => $Values["Name"], "Timer_1" => $InstanceTimer, "MultiplePing" => $InstanceMultiplePing));
 			$arrayValues[] = array("IP" => $IP, "Name" => $Values["Name"], "MAC" => $Values["MAC"],
 					       "Duration" => $Values["Duration"], "State" => $Values["Ping"], "name" => $Values["Name"], "instanceID" => $Values["InstanceID"],
 					       "create" => $arrayCreate);
