@@ -102,10 +102,14 @@
 		$PortScanStart = $this->ReadPropertyInteger("PortScanStart");
 		$PortScanEnd = $this->ReadPropertyInteger("PortScanEnd");
 		$Name = $this->ReadPropertyString("Name");
+		$Location = $this->ReadPropertyString("Location");
 		$State = GetValueInteger($this->GetIDForIdent("State"));
 	
 		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd)) {
     			$this->SetSummary($IP);
+			SetValueString($this->GetIDForIdent("IP"), $IP);
+			SetValueString($this->GetIDForIdent("Name"), $Name);
+			SetValueString($this->GetIDForIdent("Location"), $Location);
 			$this->EnableAction("OpenPorts");
 			$this->GetDataUpdate();
 			$this->SetTimerInterval("Timer_1", $this->ReadPropertyInteger("Timer_1") * 1000);
