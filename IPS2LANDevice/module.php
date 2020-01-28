@@ -44,10 +44,14 @@
 		
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
+		IPS_SetIcon($this->GetIDForIdent("LastUpdate"), "Clock");
 		$this->RegisterVariableString("IP", "IP", "~String", 20);
+		IPS_SetIcon($this->GetIDForIdent("IP"), "Internet");
 		$this->RegisterVariableString("Name", "Hostname", "~String", 30);
+		IPS_SetIcon($this->GetIDForIdent("Name"), "Information");
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 40);
 		$this->RegisterVariableString("Location", "Lokalisierung", "~String", 50);
+		IPS_SetIcon($this->GetIDForIdent("Location"), "Information");
 		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 60);
 		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 70);
 		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 80);
