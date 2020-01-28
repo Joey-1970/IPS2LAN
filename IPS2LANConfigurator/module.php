@@ -271,7 +271,7 @@
 	    	$InstanceArray = @(IPS_GetInstanceListByModuleID($guid));
 	    	If (is_array($InstanceArray)) {
 			foreach($InstanceArray as $Module) {
-				If (strtolower(IPS_GetProperty($Module, "IP")) == strtolower($IP)) {
+				If (strtolower(@IPS_GetProperty($Module, "IP")) == strtolower($IP)) {
 					$this->SendDebug("GetStationInstanceID", "Gefundene Instanz: ".$Module, 0);
 					$Result = $Module;
 					break;
