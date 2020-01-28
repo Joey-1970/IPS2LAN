@@ -17,6 +17,7 @@
 		$this->RegisterPropertyString("IP", "");
 		$this->RegisterPropertyString("MAC", "");
 		$this->RegisterPropertyString("Name", "");
+		$this->RegisterPropertyString("Location", "");
 		$this->RegisterPropertyBoolean("MultiplePing", false);
 		$this->RegisterPropertyInteger("MaxWaitTime", 100);
 		$this->RegisterPropertyInteger("Tries", 5);
@@ -38,14 +39,17 @@
 		
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
-		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 20);
-		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 30);
-		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 40);
-		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 50);
-		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 60);
-		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 70);
-		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 80);
-		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 90);
+		$this->RegisterVariableString("IP", "IP", "~String", 20);
+		$this->RegisterVariableString("Hostname", "Hostname", "~String", 30);
+		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 40);
+		$this->RegisterVariableString("Location", "Lokalisierung", "~String", 50);
+		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 60);
+		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 70);
+		$this->RegisterVariableFloat("AvgDuration", "Durchschnittliche Dauer", "IPS2LAN.ms", 80);
+		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 90);
+		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 100);
+		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 110);
+		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 120);
 		
         }
  	
@@ -61,6 +65,7 @@
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "IP", "caption" => "IP");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "MAC", "caption" => "MAC");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Name", "caption" => "Name");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Location", "caption" => "Lokalisierung");
 		$arrayElements[] = array("type" => "Label", "label" => "Aktualisierung");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "Timer_1", "caption" => "sek");
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
