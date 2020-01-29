@@ -343,11 +343,15 @@
 				$GUI433 = true;
 			}
 			If (($GUI80 == true) OR ($GUI433 == true)) {
-				SetValueInteger($this->GetIDForIdent("GUI"), 2);
+				If (GetValueInteger($this->GetIDForIdent("GUI")) <> 2) {
+					SetValueInteger($this->GetIDForIdent("GUI"), 2);
+				}
 				$Result = true; 
 			}
 			else {
-				SetValueInteger($this->GetIDForIdent("GUI"), 1);
+				If (GetValueInteger($this->GetIDForIdent("GUI")) <> 1) {
+					SetValueInteger($this->GetIDForIdent("GUI"), 1);
+				}
 			}
 		}
 	return $Result;
