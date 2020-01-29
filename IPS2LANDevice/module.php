@@ -214,6 +214,9 @@
 			SetValueFloat($this->GetIDForIdent("MaxDuration"), $MaxDuration);
 		}
 		SetValueInteger($this->GetIDForIdent("LastUpdate"), time() );
+		
+		$this->GUI();
+		
 		$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
 				"Function" => "SetState", "InstanceID" => $this->InstanceID, "State" => $Ping)));
 		
@@ -324,7 +327,7 @@
 		$Result = false; 
 		
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
-			$fp = @fsockopen($IP, 80, $errno, $errstr, 0.1);
+			$fp = @fsockopen($IP, 80, $errno, $errstr, 0.2);
 			if (!$fp) {
 				SetValueInteger($this->GetIDForIdent("GUI"), 1);
 			} else {
@@ -332,6 +335,16 @@
 				SetValueInteger($this->GetIDForIdent("GUI"), 2);
 				$Result = true; 
 			}
+			/*
+			$fp = @fsockopen($IP, 433, $errno, $errstr, 0.2);
+			if (!$fp) {
+				SetValueInteger($this->GetIDForIdent("GUI"), 1);
+			} else {
+				fclose($fp);
+				SetValueInteger($this->GetIDForIdent("GUI"), 2);
+				$Result = true; 
+			}
+			*/
 		}
 	return $Result;
 	}   
