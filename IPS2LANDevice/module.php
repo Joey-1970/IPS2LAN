@@ -329,22 +329,26 @@
 		if (filter_var($IP, FILTER_VALIDATE_IP)) {
 			$fp = @fsockopen($IP, 80, $errno, $errstr, 0.2);
 			if (!$fp) {
-				SetValueInteger($this->GetIDForIdent("GUI"), 1);
+				$GUI80 = false;
 			} else {
 				fclose($fp);
-				SetValueInteger($this->GetIDForIdent("GUI"), 2);
-				$Result = true; 
+				$GUI80 = true;
 			}
-			/*
+			
 			$fp = @fsockopen($IP, 433, $errno, $errstr, 0.2);
 			if (!$fp) {
-				SetValueInteger($this->GetIDForIdent("GUI"), 1);
+				$GUI433 = false;
 			} else {
 				fclose($fp);
+				$GUI433 = true;
+			}
+			If (($GUI80 == true) OR ($GUI433 == true)) {
 				SetValueInteger($this->GetIDForIdent("GUI"), 2);
 				$Result = true; 
 			}
-			*/
+			else {
+				SetValueInteger($this->GetIDForIdent("GUI"), 1);
+			}
 		}
 	return $Result;
 	}   
