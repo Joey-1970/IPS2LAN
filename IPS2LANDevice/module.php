@@ -45,7 +45,7 @@
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		IPS_SetIcon($this->GetIDForIdent("LastUpdate"), "Clock");
-		$this->RegisterVariableString("IP", "IP", "~String", 20);
+		$this->RegisterVariableString("IP", "IP", "~HTMLBox", 20);
 		IPS_SetIcon($this->GetIDForIdent("IP"), "Internet");
 		$this->RegisterVariableString("Name", "Hostname", "~String", 30);
 		IPS_SetIcon($this->GetIDForIdent("Name"), "Information");
@@ -345,12 +345,15 @@
 			If (($GUI80 == true) OR ($GUI433 == true)) {
 				If (GetValueInteger($this->GetIDForIdent("GUI")) <> 2) {
 					SetValueInteger($this->GetIDForIdent("GUI"), 2);
+					$DeviceURL = '<a href='."http://".$IP.' target="_blank">'.$IP.'</a>';
+					SetValueString($this->GetIDForIdent("IP"), $DeviceURL);
 				}
 				$Result = true; 
 			}
 			else {
 				If (GetValueInteger($this->GetIDForIdent("GUI")) <> 1) {
 					SetValueInteger($this->GetIDForIdent("GUI"), 1);
+					SetValueString($this->GetIDForIdent("IP"), $IP);
 				}
 			}
 		}
