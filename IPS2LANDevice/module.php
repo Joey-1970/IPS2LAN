@@ -26,6 +26,12 @@
 		$this->RegisterPropertyInteger("Timer_1", 10);
 		$this->RegisterTimer("Timer_1", 0, 'IPS2LANDevice_GetDataUpdate($_IPS["TARGET"]);');
 		$this->ConnectParent("{8A7D4A56-3D60-081E-AC65-D839FAC66611}");
+		$this->RegisterPropertyInteger("WebfrontID", 0);
+		$this->RegisterPropertyString("Title", "Meldungstitel");
+		$this->RegisterPropertyString("TextDown", "Verbindung unterbrochen");
+		$this->RegisterPropertyString("TextDisorder", "Verbindung gestört");
+		$this->RegisterPropertyString("TextUp", "Verbindung hergestellt");
+		$this->RegisterPropertyInteger("SoundID", 0);
 		
 		
 		// Profil anlegen
@@ -45,7 +51,8 @@
 		// Status-Variablen anlegen		
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		IPS_SetIcon($this->GetIDForIdent("LastUpdate"), "Clock");
-		$this->RegisterVariableString("IP", "IP", "~HTMLBox", 20);
+		//$this->RegisterVariableString("IP", "IP", "~HTMLBox", 20);
+		$this->RegisterVariableString("IP", "IP", "~String", 20);
 		IPS_SetIcon($this->GetIDForIdent("IP"), "Internet");
 		$this->RegisterVariableString("Name", "Hostname", "~String", 30);
 		IPS_SetIcon($this->GetIDForIdent("Name"), "Information");
@@ -88,6 +95,27 @@
 		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "PortScanStart", "caption" => "Port");
 		$arrayElements[] = array("type" => "IntervalBox", "name" => "PortScanEnd", "caption" => "Port");
+		$arrayElements[] = array("type" => "Label", "label" => "_____________________________________________________________________________________________________");
+		$arrayElements[] = array("type" => "Label", "label" => "Benachrichtigungsfunktion");
+		$WebfrontID = Array();
+		$WebfrontID = $this->GetWebfrontID();
+		$arrayOptions = array();
+		$arrayOptions[] = array("label" => "unbestimmt", "value" => 0);
+		foreach ($WebfrontID as $ID => $Webfront) {
+        		$arrayOptions[] = array("label" => $Webfront, "value" => $ID);
+    		}
+		$arrayElements[] = array("type" => "Select", "name" => "WebfrontID", "caption" => "Webfront", "options" => $arrayOptions );
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Title", "caption" => "Meldungstitel");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDown", "caption" => "Text IP nicht erreichbar");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDisorder", "caption" => "Text IP gestört");
+		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextUp", "caption" => "Text erreichbar");
+		$arrayOptions = array();
+		$SoundArray = array("Alarm", "Bell", "Boom", "Buzzer", "Connected", "Dark", "Digital", "Drums", "Duck", "Full", "Happy", "Horn", "Inception", "Kazoo", "Roll", "Siren", "Space", "Trickling", "Turn");
+		foreach ($SoundArray as $ID => $Sound) {
+        		$arrayOptions[] = array("label" => $Sound, "value" => $ID);
+    		}
+		$arrayElements[] = array("type" => "Select", "name" => "SoundID", "caption" => "Sound", "options" => $arrayOptions );		
+
 		
  		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
  	}       
@@ -200,6 +228,17 @@
 		
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
 			SetValueInteger($this->GetIDForIdent("State"), $Ping);
+			
+			If ($Ping == 1) { // offline
+				$this->Notification($this->ReadPropertyString("TextDown"));
+			}
+			elseif ($Ping == 2) { // gestört
+				$this->Notification($this->ReadPropertyString("TextDisorder"));
+			}
+			If ($State == 3) { // online
+				$this->Notification($this->ReadPropertyString("TextUp"));
+			}
+			
 		}
 		If ($SuccessRate <> GetValueInteger($this->GetIDForIdent("SuccessRate"))) {
 			SetValueInteger($this->GetIDForIdent("SuccessRate"), $SuccessRate);
@@ -346,7 +385,8 @@
 				If (GetValueInteger($this->GetIDForIdent("GUI")) <> 2) {
 					SetValueInteger($this->GetIDForIdent("GUI"), 2);
 					$DeviceURL = '<a href='."http://".$IP.' target="_blank">'.$IP.'</a>';
-					SetValueString($this->GetIDForIdent("IP"), $DeviceURL);
+					//SetValueString($this->GetIDForIdent("IP"), $DeviceURL);
+					SetValueString($this->GetIDForIdent("IP"), $IP);
 				}
 				$Result = true; 
 			}
@@ -385,7 +425,32 @@
 		SetValueBoolean($this->GetIDForIdent("OpenPorts"), false);
 	return serialize($OpenPorts);
 	}   
+	 
+	private function Notification ($Text)
+	{
+		If ($this->ReadPropertyInteger("WebfrontID") > 0) {
+			$WebfrontID = $this->ReadPropertyInteger("WebfrontID");
+			$Title = $this->ReadPropertyString("Title");
+			$SoundID = $this->ReadPropertyInteger("SoundID");
+			$SoundArray = array("Alarm", "Bell", "Boom", "Buzzer", "Connected", "Dark", "Digital", "Drums", "Duck", "Full", "Happy", "Horn", "Inception", "Kazoo", "Roll", "Siren", "Space", "Trickling", "Turn");
+			$Sound = strtolower($SoundArray[$SoundID]);
+			$TargetID = 0;
+			WFC_PushNotification($WebfrontID, $Title, substr($Text, 0, 256), $Sound, $TargetID);
+		}
+	}    
 	    
+	private function GetWebfrontID()
+	{
+    		$guid = "{3565B1F2-8F7B-4311-A4B6-1BF1D868F39E}"; // Webfront Konfigurator
+    		//Auflisten
+    		$WebfrontArray = (IPS_GetInstanceListByModuleID($guid));
+    		$Result = array();
+    		foreach ($WebfrontArray as $Webfront) {
+        		$Result[$Webfront] = IPS_GetName($Webfront);
+    		}
+	return $Result;   
+	}
+	
 	private function RegisterProfileInteger($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize)
 	{
 	        if (!IPS_VariableProfileExists($Name))
