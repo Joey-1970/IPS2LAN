@@ -235,7 +235,7 @@
 			elseif ($Ping == 2) { // gestört
 				$this->Notification($this->ReadPropertyString("TextDisorder"));
 			}
-			If ($State == 3) { // online
+			If ($Ping == 3) { // online
 				$this->Notification($this->ReadPropertyString("TextUp"));
 			}
 			
