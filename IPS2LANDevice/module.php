@@ -52,12 +52,12 @@
 		$this->RegisterVariableInteger("LastUpdate", "Letztes Update", "~UnixTimestamp", 10);
 		IPS_SetIcon($this->GetIDForIdent("LastUpdate"), "Clock");
 		//$this->RegisterVariableString("IP", "IP", "~HTMLBox", 20);
-		$this->RegisterVariableString("IP", "IP", "~String", 20);
+		$this->RegisterVariableString("IP", "IP", "", 20);
 		IPS_SetIcon($this->GetIDForIdent("IP"), "Internet");
-		$this->RegisterVariableString("Name", "Hostname", "~String", 30);
+		$this->RegisterVariableString("Name", "Hostname", "", 30);
 		IPS_SetIcon($this->GetIDForIdent("Name"), "Information");
 		$this->RegisterVariableInteger("State", "Status", "IPS2LAN.State", 40);
-		$this->RegisterVariableString("Location", "Lokalisierung", "~String", 50);
+		$this->RegisterVariableString("Location", "Lokalisierung", "", 50);
 		IPS_SetIcon($this->GetIDForIdent("Location"), "Information");
 		$this->RegisterVariableInteger("SuccessRate", "Erfolgsqoute", "~Intensity.100", 60);
 		$this->RegisterVariableFloat("MinDuration", "Minimale Dauer", "IPS2LAN.ms", 70);
@@ -65,7 +65,7 @@
 		$this->RegisterVariableFloat("MaxDuration", "Maximale Dauer", "IPS2LAN.ms", 90);
 		$this->RegisterVariableBoolean("WOL", "Wake-on-LAN", "~Switch", 100);
 		$this->RegisterVariableInteger("GUI", "GUI", "IPS2LAN.GUI", 110);
-		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "~Switch", 120);
+		$this->RegisterVariableBoolean("OpenPorts", "Offene Ports Scan", "", 120);
 		$this->RegisterVariableString("OpenPortsResult", "Port Scan Ergebnis", "~TextBox", 130);
 		
         }
