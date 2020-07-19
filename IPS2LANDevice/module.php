@@ -14,6 +14,8 @@
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
+		$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+		
 		$this->RegisterPropertyString("IP", "");
 		$this->RegisterPropertyString("MAC", "");
 		$this->RegisterPropertyString("Name", "");
@@ -125,7 +127,6 @@
         {
             	// Diese Zeile nicht löschen
             	parent::ApplyChanges();
-		$this->RegisterMessage($this->InstanceID, 10103);
 		$this->SetStatus(102);
 		
 		SetValueInteger($this->GetIDForIdent("GUI"), 0);
@@ -145,7 +146,7 @@
 		$Location = $this->ReadPropertyString("Location");
 		$State = GetValueInteger($this->GetIDForIdent("State"));
 	
-		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd)) {
+		if ((filter_var($IP, FILTER_VALIDATE_IP)) AND ($PortScanStart < $PortScanEnd) AND (IPS_GetKernelRunlevel() == KR_READY)) {
     			$this->SetSummary($IP);
 			SetValueString($this->GetIDForIdent("IP"), $IP);
 			SetValueString($this->GetIDForIdent("Name"), $Name);
@@ -170,13 +171,14 @@
 	
 	public function MessageSink($TimeStamp, $SenderID, $Message, $Data)
     	{
- 		switch ($Message) {
-			case 10103:
-				$this->ApplyChanges();
+		switch ($Message) {
+			case 10001:
+				// IPS_KERNELSTARTED
+				$this->ApplyChanges;
 				break;
 			
 		}
-    	}
+    	}        
 	
 	public function RequestAction($Ident, $Value) 
 	{
@@ -256,8 +258,10 @@
 		
 		$this->GUI();
 		
-		$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
+		If(IPS_GetKernelRunlevel() == KR_READY) {
+			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
 				"Function" => "SetState", "InstanceID" => $this->InstanceID, "State" => $Ping)));
+		}
 		
 	}
 	
