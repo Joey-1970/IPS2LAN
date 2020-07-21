@@ -117,9 +117,11 @@
         		$arrayOptions[] = array("label" => $Sound, "value" => $ID);
     		}
 		$arrayElements[] = array("type" => "Select", "name" => "SoundID", "caption" => "Sound", "options" => $arrayOptions );		
-
 		
- 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements)); 		 
+		$arrayActions[] = array("type" => "Label", "label" => "Test Center"); 
+		$arrayActions[] = array("type" => "TestCenter", "name" => "TestCenter");
+		
+ 		return JSON_encode(array("status" => $arrayStatus, "elements" => $arrayElements, "actions" => $arrayActions)); 	 
  	}       
 	   
         // Überschreibt die intere IPS_ApplyChanges($id) Funktion
