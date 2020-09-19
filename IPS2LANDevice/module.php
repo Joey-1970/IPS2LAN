@@ -35,7 +35,6 @@
 		$this->RegisterPropertyString("TextUp", "Verbindung hergestellt");
 		$this->RegisterPropertyInteger("SoundID", 0);
 		
-		
 		// Profil anlegen
 		$this->RegisterProfileInteger("IPS2LAN.State", "Information", "", "", 0, 3, 1);
 		IPS_SetVariableProfileAssociation("IPS2LAN.State", 0, "Unbekannt", "Information", -1);
