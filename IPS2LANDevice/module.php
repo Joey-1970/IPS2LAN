@@ -7,7 +7,7 @@ class IPS2LANDevice extends IPSModule
         {
             	// Diese Zeile nicht löschen.
             	parent::Create();
-		$this->RegisterMessage(0, IPS_KERNELMESSAGE);
+		$this->RegisterMessage(0, IPS_KERNELSTARTED);
 		
 		$this->RegisterPropertyString("IP", "");
 		$this->RegisterPropertyString("MAC", "");
