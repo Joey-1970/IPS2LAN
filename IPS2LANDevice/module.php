@@ -225,18 +225,24 @@ class IPS2LANDevice extends IPSModule
 		}
 		
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
-			SetValueInteger($this->GetIDForIdent("State"), $Ping);
-			
+			$SentDisorder = $this->ReadPropertyBoolean("SentDisorder)";
 			If ($Ping == 1) { // offline
 				$this->Notification($this->ReadPropertyString("TextDown"));
 			}
 			elseif ($Ping == 2) { // gestört
-				$this->Notification($this->ReadPropertyString("TextDisorder"));
+				If ($SentDisorder == true) {
+					$this->Notification($this->ReadPropertyString("TextDisorder"));
+				}
 			}
 			If ($Ping == 3) { // online
-				$this->Notification($this->ReadPropertyString("TextUp"));
+				If ($SentDisorder == true) {
+					$this->Notification($this->ReadPropertyString("TextUp"));
+				}
+				elseif (($SentDisorder == false) AND (GetValueInteger($this->GetIDForIdent("State")) <> 2)) {
+					$this->Notification($this->ReadPropertyString("TextUp"));
+				}
 			}
-			
+			SetValueInteger($this->GetIDForIdent("State"), $Ping);
 		}
 		If ($SuccessRate <> GetValueInteger($this->GetIDForIdent("SuccessRate"))) {
 			SetValueInteger($this->GetIDForIdent("SuccessRate"), $SuccessRate);
