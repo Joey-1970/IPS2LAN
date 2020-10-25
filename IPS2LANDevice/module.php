@@ -25,6 +25,7 @@ class IPS2LANDevice extends IPSModule
 		$this->RegisterPropertyString("Title", "Meldungstitel");
 		$this->RegisterPropertyString("TextDown", "Verbindung unterbrochen");
 		$this->RegisterPropertyString("TextDisorder", "Verbindung gestört");
+		$this->RegisterPropertyBoolean("SentDisorder", false);
 		$this->RegisterPropertyString("TextUp", "Verbindung hergestellt");
 		$this->RegisterPropertyInteger("SoundID", 0);
 		
@@ -101,6 +102,7 @@ class IPS2LANDevice extends IPSModule
 		$arrayElements[] = array("type" => "Select", "name" => "WebfrontID", "caption" => "Webfront", "options" => $arrayOptions );
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Title", "caption" => "Meldungstitel");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDown", "caption" => "Text IP nicht erreichbar");
+		$arrayElements[] = array("type" => "CheckBox", "name" => "SentDisorder", "caption" => "Sende Störungen"); 
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDisorder", "caption" => "Text IP gestört");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextUp", "caption" => "Text erreichbar");
 		$arrayOptions = array();
