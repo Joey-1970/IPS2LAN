@@ -102,8 +102,12 @@ class IPS2LANDevice extends IPSModule
 		$arrayElements[] = array("type" => "Select", "name" => "WebfrontID", "caption" => "Webfront", "options" => $arrayOptions );
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "Title", "caption" => "Meldungstitel");
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDown", "caption" => "Text IP nicht erreichbar");
-		$arrayElements[] = array("type" => "CheckBox", "name" => "SentDisorder", "caption" => "Sende Störungen"); 
-		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextDisorder", "caption" => "Text IP gestört");
+		
+		$ArrayRowLayout = array();
+		$ArrayRowLayout[] = array("type" => "CheckBox", "name" => "SentDisorder", "caption" => "Sende Störungen"); 
+		$ArrayRowLayout[] =  array("type" => "ValidationTextBox", "name" => "TextDisorder", "caption" => "Text IP gestört");
+		$arrayElements[] = array("type" => "RowLayout", "items" => $ArrayRowLayout);
+		
 		$arrayElements[] = array("type" => "ValidationTextBox", "name" => "TextUp", "caption" => "Text erreichbar");
 		$arrayOptions = array();
 		$SoundArray = array("Alarm", "Bell", "Boom", "Buzzer", "Connected", "Dark", "Digital", "Drums", "Duck", "Full", "Happy", "Horn", "Inception", "Kazoo", "Roll", "Siren", "Space", "Trickling", "Turn");
