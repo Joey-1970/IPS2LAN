@@ -225,7 +225,7 @@ class IPS2LANDevice extends IPSModule
 		}
 		
 		If ($Ping <> GetValueInteger($this->GetIDForIdent("State"))) {
-			$SentDisorder = $this->ReadPropertyBoolean("SentDisorder)";
+			$SentDisorder = $this->ReadPropertyBoolean("SentDisorder");
 			If ($Ping == 1) { // offline
 				$this->Notification($this->ReadPropertyString("TextDown"));
 			}
