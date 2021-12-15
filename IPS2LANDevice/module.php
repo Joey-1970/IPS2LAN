@@ -159,6 +159,9 @@ class IPS2LANDevice extends IPSModule
 			$Position = $IP_Parts[3] * 10;
 			$Result = $this->SendDataToParent(json_encode(Array("DataID"=> "{31F3B680-3AD6-4C50-EC4B-ED0A21656029}", 
 				"Function" => "SetInstance", "InstanceID" => $this->InstanceID, "Name" => $Name, "State" => $State, "Position" => $Position)));
+			If ($this->GetStatus() <> 102) {
+				$this->SetStatus(102);
+			}
 		}
 		else {
 			$this->SetSummary("");
@@ -166,6 +169,9 @@ class IPS2LANDevice extends IPSModule
 			$this->DisableAction("WOL");
 			$this->SendDebug("ApplyChanges", "Keine gueltige IP verfügbar oder Scan-Ports unplausibel!", 0);
 			$this->SetTimerInterval("Timer_1", 0);
+			If ($this->GetStatus() <> 202) {
+				$this->SetStatus(202);
+			}
 		}
 	}
 	
