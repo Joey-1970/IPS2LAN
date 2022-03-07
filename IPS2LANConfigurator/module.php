@@ -215,8 +215,8 @@
 
 		$devices = array();
 
-		$Search = array(" auf ", "[ether]", "eth0", "(", ")", " at ", " on ", " en0 ", "ifscope", "[ethernet]", "ovs_bond0", "ovs_");
-		$Replace = array(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ");
+		$Search = array(" auf ", "[ether]", "ovs_eth0", "eth0", "(", ")", " at ", " on ", " en0 ", "ifscope", "[ethernet]", "ovs_bond0", "br0");
+		$Replace = array(" ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ");
 
 		
 		$Devices = array();
